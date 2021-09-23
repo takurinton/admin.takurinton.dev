@@ -1,6 +1,8 @@
 import React from "react";
 import { Box, FormControl, Select, FormLabel, Input } from "@chakra-ui/react"
 import { useForm } from './useForm';
+import { H2 } from './components';
+import mock from '../mock.json';
 
 export const AnalyticsForm = () => {
   return (
@@ -20,9 +22,7 @@ const Form = () => {
 
   return (
     <Box width={'40vw'} padding={'10px'}>
-      <Box textAlign={'center'} marginBottom={'20px'}>
-        <h1 style={{ fontSize: '1.2rem', fontWeight: 700 }}>filter</h1>
-      </Box>
+      <H2 text={'data'}></H2>
       <FormControl>
         <FormLabel>domain</FormLabel>
         <Select name={'domain'} onChange={onChange}>
@@ -32,7 +32,14 @@ const Form = () => {
         </Select>
 
         <FormLabel>path</FormLabel>
-        <Input type="text" name={'path'} value={state.path} onChange={onChange} placeholder={'pathを入力してください'} />
+        <Select name={'path'} onChange={onChange} placeholder={'pathを入力してください'}>
+          {
+            state.domain === '1' ? <option value={'/'} >{'/'}</option> : 
+            mock.data.analytics.path_list.map(path => {
+              return <option value={path.path} >{path.path}</option>
+            })
+          }
+        </Select>
 
         <FormLabel>start</FormLabel>
         <Select name={'start'} onChange={onChange}>

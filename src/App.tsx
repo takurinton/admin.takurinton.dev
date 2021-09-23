@@ -1,6 +1,9 @@
 import { ChakraProvider, extendTheme, Flex, Box } from "@chakra-ui/react";
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { AnalyticsForm } from './Form';
 import { Result } from './Result';
+import { Detail } from './Detail';
+import { H1 } from './components';
 
 const colors = {
   brand: {
@@ -15,13 +18,18 @@ const theme = extendTheme({ colors });
 export const App = () => {
   return (
     <ChakraProvider theme={theme}>
-      <Box textAlign={'center'} margin={'50px 0'}>
-        <h1 style={{ fontSize: '2rem', fontWeight: 800 }}>takurinton analytics</h1>
-      </Box>
-      <Flex margin={'0 auto'} width={'90vw'}>
-        <AnalyticsForm />
-        <Result />
-      </Flex>
+      <H1 text={'takurinton analytics'}></H1>
+      <Router>
+        <Route exact path='/'>
+          <Flex margin={'0 auto'} width={'90vw'}>
+          <AnalyticsForm />
+          <Result />
+        </Flex>
+        </Route>
+        <Route exact path='/detail'>
+          <Detail />
+        </Route>
+      </Router>
     </ChakraProvider>
   );
 }

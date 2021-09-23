@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import {
   Box,
   Table,
@@ -10,14 +11,13 @@ import {
   TableCaption,
 } from "@chakra-ui/react"
 import mock from '../mock.json';
+import { H2 } from './components';
 
 export const Result = () => {
   const { data } = mock;
   return (
     <Box width={'100%'} padding={'10px 10px 10px 30px'}>
-      <Box textAlign={'center'} marginBottom={'20px'}>
-        <h1 style={{ fontSize: '1.2rem', fontWeight: 700 }}>result</h1>
-      </Box>
+        <H2 text={'result'}></H2>
       <Table variant="simple">
         <TableCaption>takurinton analytics</TableCaption>
           <Thead>
@@ -25,6 +25,7 @@ export const Result = () => {
               <Th>domain</Th>
               <Th>path</Th>
               <Th>created_at</Th>
+              <Th>detail</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -33,7 +34,8 @@ export const Result = () => {
                 <Tr key={a.id}>
                   <Td>{a.domain}</Td>
                   <Td>{a.path}</Td>
-                  <Td>{new Date(Number(a.created_at)).toString()}</Td>
+                  <Td>{a.created_at}</Td>
+                  <Td><Link to={`/detail/?domain=${a.domain}&path=${a.path}`}>detail</Link></Td>
                 </Tr>
               ))
             }
