@@ -48,6 +48,22 @@ export const AnalyticsForm = () => {
     query: query,
   });
 
+  // ちょっとしんどい
+  if (query === initialQuery) {
+    return result.fetching ? <H1 text={'loading...'}></H1>: 
+    <TransformerContextProvider 
+      root={ast}
+      onChangeNode={ast => {
+        setAst(ast);
+        setQuery(print(ast));
+        console.log(print(ast))
+      }}
+    >
+      <Form result={result} node={ast} />
+      <Result result={result} ast={ast} />
+    </TransformerContextProvider>
+  }
+
   return (
     <>
       <TransformerContextProvider 
@@ -67,7 +83,7 @@ export const AnalyticsForm = () => {
 
 const Form = ({ result, node }: { result?: any, node: ASTNode }) => {
   const pathList = result.data.analytics.path_list;
-
+  
   if (node.kind === 'Document') {
     return (
       <Box>
