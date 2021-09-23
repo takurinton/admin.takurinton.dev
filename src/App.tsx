@@ -1,7 +1,10 @@
+import { ChakraProvider } from "@chakra-ui/react";
+import { Form } from './Form';
+
 export const App = () => {
   return (
-    <div>
-      hello world
-    </div>
+    <ChakraProvider>
+      <Form />
+    </ChakraProvider>
   );
 }
