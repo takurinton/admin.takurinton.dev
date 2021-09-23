@@ -1,5 +1,5 @@
 import { Box } from "@chakra-ui/react";
-import { ACenter, H1 } from './components';
+import { ACenter } from '../components/text';
 
 const getParam = (name: string) => {
   const url = window.location.href;

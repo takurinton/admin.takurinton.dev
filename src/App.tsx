@@ -1,28 +1,17 @@
-import { ChakraProvider, extendTheme, Flex, Box } from "@chakra-ui/react";
-import { Provider, createClient, useQuery } from 'urql';
+import { ChakraProvider, Flex } from "@chakra-ui/react";
+import { Provider, createClient } from 'urql';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { AnalyticsForm } from './Form';
-import { Result } from './Result';
-import { Detail } from './Detail';
-import { H1 } from './components';
-
-const colors = {
-  brand: {
-    900: "#1a365d",
-    800: "#153e75",
-    700: "#2a69ac",
-  },
-};
+import { AnalyticsForm } from './pages/AnalyticsForm';
+import { Detail } from './pages/Detail';
+import { H1 } from './components/text';
 
 const client = createClient({
   url: 'http://localhost:3001/prismaserver/graphql',
 });
 
-const theme = extendTheme({ colors });
-
 export const App = () => {
   return (
-    <ChakraProvider theme={theme}>
+    <ChakraProvider>
       <Provider value={client}>
         <H1 text={'takurinton analytics'}></H1>
         <Router>

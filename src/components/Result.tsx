@@ -10,7 +10,7 @@ import {
   Td,
   TableCaption,
 } from "@chakra-ui/react"
-import { H2 } from './components';
+import { H2 } from './text';
 
 export const Result = ({ result, ast }: { result: any, ast: DocumentNode }) => {
   return (

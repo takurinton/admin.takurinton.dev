@@ -1,27 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useQuery } from 'urql';
 import { ASTNode, DocumentNode, parse, print } from "graphql";
-import { Box, FormControl, Select, FormLabel, Input } from "@chakra-ui/react"
-import { useForm } from './useForm';
-import { H1, H2 } from './components';
-import { Result } from "./Result";
-import { TransformerContextProvider, useTransformerContext } from './context';
-
-const q = `
-analytics {
-  count
-  analytics {
-    id 
-    domain 
-    path
-    created_at
-  }
-  path_list {
-    domain 
-    path
-  }
-}
-`
+import { Box, FormControl, Select, FormLabel } from "@chakra-ui/react"
+import { useForm } from '../hooks/useForm';
+import { H1, H2 } from '../components/text';
+import { Result } from "../components/Result";
+import { TransformerContextProvider, useTransformerContext } from '../context/context';
 
 const initialQuery = `
 query getAnalytics {
@@ -48,7 +32,7 @@ export const AnalyticsForm = () => {
     query: query,
   });
 
-  // ちょっとしんどい
+  // 最初だけローディング表示する、2回目以降は form がリセットされてしまうのでやらない
   if (query === initialQuery) {
     return result.fetching ? <H1 text={'loading...'}></H1>: 
     <TransformerContextProvider 
@@ -124,7 +108,7 @@ const Form = ({ result, node }: { result?: any, node: ASTNode }) => {
       onUpdateAST(e);
     };
 
-    const onUpdateAST = (event) => {
+    const onUpdateAST = (event: React.ChangeEvent<HTMLSelectElement>) => {
       const _node = api.getCurrentNode();
       _node.definitions.map(v => {
         if (v.kind === 'OperationDefinition') {
@@ -176,5 +160,5 @@ const Form = ({ result, node }: { result?: any, node: ASTNode }) => {
     );
   };
 
-  return <Box>hoge</Box>
+  return <Box>error</Box>
 }
