@@ -10,11 +10,9 @@ import {
   Td,
   TableCaption,
 } from "@chakra-ui/react"
-import mock from '../mock.json';
 import { H2 } from './components';
 
-export const Result = () => {
-  const { data } = mock;
+export const Result = ({ result }: { result: any }) => {
   return (
     <Box width={'100%'} padding={'10px 10px 10px 30px'}>
         <H2 text={'result'}></H2>
@@ -30,7 +28,7 @@ export const Result = () => {
           </Thead>
           <Tbody>
             {
-              data.analytics.analytics.map(a => (
+              result.data.analytics.analytics.map((a: { id: number, domain: string, path: string, created_at: string}) => (
                 <Tr key={a.id}>
                   <Td>{a.domain}</Td>
                   <Td>{a.path}</Td>
@@ -45,7 +43,7 @@ export const Result = () => {
               <Td>...</Td>
             </Tr>
           </Tbody>
-          <h1>count: {data.analytics.count}</h1>
+          <h1>count: {result.data.analytics.count}</h1>
       </Table>
     </Box>
   );
