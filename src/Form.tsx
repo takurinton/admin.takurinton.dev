@@ -48,9 +48,6 @@ export const AnalyticsForm = () => {
     query: query,
   });
 
-  if (result.fetching) return <H1 text={'Loading...'}></H1>;
-  if (result.error) return <div>{result.error.message}</div>;
-
   return (
     <>
       <TransformerContextProvider 
@@ -69,6 +66,8 @@ export const AnalyticsForm = () => {
 };
 
 const Form = ({ result, node }: { result?: any, node: ASTNode }) => {
+  const pathList = result.data.analytics.path_list;
+
   if (node.kind === 'Document') {
     return (
       <Box>
@@ -106,31 +105,26 @@ const Form = ({ result, node }: { result?: any, node: ASTNode }) => {
 
     const onChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
       handleChange(e);
-      onUpdateAST(e.target.value);
+      onUpdateAST(e);
     };
 
-    const onUpdateAST = (value: string) => {
+    const onUpdateAST = (event) => {
       const _node = api.getCurrentNode();
       _node.definitions.map(v => {
         if (v.kind === 'OperationDefinition') {
           v.selectionSet.selections.map(vv => {
             // @ts-ignore
             vv.arguments.map(vvv => {
-              node.arguments.map(vvvv => {
-                if (vvv.name.value === vvvv.name.value) {
-                  vvv.value.value = value;
-                  api.updateNode(_node);
-                };
-              })
+              if (vvv.name.value === event.target.name) {
+                vvv.value.value = event.target.value;
+                api.updateNode(_node);
+              };
             });
           });
         }
       });
     }
   
-    useEffect(() => {
-    }, [state]);
-    
     return (
       <Box width={'40vw'} padding={'10px'}>
         <H2 text={'data'}></H2>
@@ -146,7 +140,7 @@ const Form = ({ result, node }: { result?: any, node: ASTNode }) => {
           <Select name={'path'} onChange={onChange} placeholder={'pathを入力してください'}>
             {
               state.domain === '1' ? <option value={'/'} >{'/'}</option> : 
-              result.data.analytics.path_list.map((path: { path: string }) => {
+              pathList.map((path: { path: string }) => {
                 return <option key={path.path} value={path.path} >{path.path}</option>
               })
             }
