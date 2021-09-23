@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from 'urql';
 import { ASTNode, DocumentNode, parse } from "graphql";
 import { Box, FormControl, Select, FormLabel, Input } from "@chakra-ui/react"
@@ -68,17 +68,6 @@ export const AnalyticsForm = () => {
 };
 
 const Form = ({ result, node }: { result?: any, node: ASTNode }) => {
-  const {
-    handleChange, 
-    state
-  } = useForm();
-
-  const onChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-    handleChange(e);
-  };
-
-  const api = useTransformerContext();
-
   if (node.kind === 'Document') {
     return (
       <Box>
@@ -108,6 +97,39 @@ const Form = ({ result, node }: { result?: any, node: ASTNode }) => {
   }
 
   if (node.kind === 'Field') {
+    const api = useTransformerContext();
+    const {
+      handleChange, 
+      state
+    } = useForm();
+
+    const onChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+      handleChange(e);
+      onUpdateAST(e.target.value);
+    };
+
+    const onUpdateAST = (v: string) => {
+      const _node = api.getCurrentNode();
+      _node.definitions.map(v => {
+        if (v.kind === 'OperationDefinition') {
+          v.selectionSet.selections.map(vv => {
+            // @ts-ignore
+            vv.arguments.map(vvv => {
+              node.arguments.map(vvvv => {
+                if (vvv.name.value === vvvv.name.value) {
+                  vvv.value.value = v;
+                  api.updateNode(_node);
+                };
+              })
+            });
+          });
+        }
+      });
+    }
+  
+    useEffect(() => {
+    }, [state]);
+    
     return (
       <Box width={'40vw'} padding={'10px'}>
         <H2 text={'data'}></H2>
