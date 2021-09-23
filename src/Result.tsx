@@ -15,7 +15,7 @@ export const Result = () => {
   const { data } = mock;
   return (
     <Box width={'100%'} padding={'10px 10px 10px 30px'}>
-        <Box textAlign={'center'} marginBottom={'20px'}>
+      <Box textAlign={'center'} marginBottom={'20px'}>
         <h1 style={{ fontSize: '1.2rem', fontWeight: 700 }}>result</h1>
       </Box>
       <Table variant="simple">
@@ -30,10 +30,10 @@ export const Result = () => {
           <Tbody>
             {
               data.analytics.analytics.map(a => (
-                <Tr>
+                <Tr key={a.id}>
                   <Td>{a.domain}</Td>
                   <Td>{a.path}</Td>
-                  <Td>{new Date(a.created_at * 1000).toString()}</Td>
+                  <Td>{new Date(Number(a.created_at)).toString()}</Td>
                 </Tr>
               ))
             }

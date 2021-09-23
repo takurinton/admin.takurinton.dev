@@ -1,5 +1,5 @@
 import { ChakraProvider, extendTheme, Flex, Box } from "@chakra-ui/react";
-import { Form } from './Form';
+import { AnalyticsForm } from './Form';
 import { Result } from './Result';
 
 const colors = {
@@ -19,7 +19,7 @@ export const App = () => {
         <h1 style={{ fontSize: '2rem', fontWeight: 800 }}>takurinton analytics</h1>
       </Box>
       <Flex margin={'0 auto'} width={'90vw'}>
-        <Form />
+        <AnalyticsForm />
         <Result />
       </Flex>
     </ChakraProvider>
