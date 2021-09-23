@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useQuery } from 'urql';
-import { ASTNode, DocumentNode, parse } from "graphql";
+import { ASTNode, DocumentNode, parse, print } from "graphql";
 import { Box, FormControl, Select, FormLabel, Input } from "@chakra-ui/react"
 import { useForm } from './useForm';
 import { H1, H2 } from './components';
@@ -25,7 +25,7 @@ analytics {
 
 const initialQuery = `
 query getAnalytics {
-  analytics(domain: 2, path: "/post/77") {
+  analytics(domain: 0, path: "") {
     count
     analytics {
       id 
@@ -40,13 +40,12 @@ query getAnalytics {
   }
 }`;
 
-
-
 export const AnalyticsForm = () => {
+  const [query, setQuery] = useState(initialQuery)
   const [ast, setAst] = useState<DocumentNode>(parse(initialQuery));
 
   const [result] = useQuery({
-    query: initialQuery,
+    query: query,
   });
 
   if (result.fetching) return <H1 text={'Loading...'}></H1>;
@@ -57,7 +56,9 @@ export const AnalyticsForm = () => {
       <TransformerContextProvider 
         root={ast}
         onChangeNode={ast => {
-          console.log(ast)
+          setAst(ast);
+          setQuery(print(ast));
+          console.log(print(ast))
         }}
       >
         <Form result={result} node={ast} />
@@ -108,7 +109,7 @@ const Form = ({ result, node }: { result?: any, node: ASTNode }) => {
       onUpdateAST(e.target.value);
     };
 
-    const onUpdateAST = (v: string) => {
+    const onUpdateAST = (value: string) => {
       const _node = api.getCurrentNode();
       _node.definitions.map(v => {
         if (v.kind === 'OperationDefinition') {
@@ -117,7 +118,7 @@ const Form = ({ result, node }: { result?: any, node: ASTNode }) => {
             vv.arguments.map(vvv => {
               node.arguments.map(vvvv => {
                 if (vvv.name.value === vvvv.name.value) {
-                  vvv.value.value = v;
+                  vvv.value.value = value;
                   api.updateNode(_node);
                 };
               })
