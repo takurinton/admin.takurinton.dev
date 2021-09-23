@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
+import { DocumentNode } from "graphql";
 import {
   Box,
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
@@ -12,10 +12,13 @@ import {
 } from "@chakra-ui/react"
 import { H2 } from './components';
 
-export const Result = ({ result }: { result: any }) => {
+export const Result = ({ result, ast }: { result: any, ast: DocumentNode }) => {
   return (
     <Box width={'100%'} padding={'10px 10px 10px 30px'}>
-        <H2 text={'result'}></H2>
+      <H2 text={'result'}></H2>
+      <Box textAlign={'right'} marginRight={'30px'} marginBottom={'10px'}>
+        count: {result.data.analytics.count}
+      </Box>
       <Table variant="simple">
         <TableCaption>takurinton analytics</TableCaption>
           <Thead>
@@ -43,7 +46,6 @@ export const Result = ({ result }: { result: any }) => {
               <Td>...</Td>
             </Tr>
           </Tbody>
-          <h1>count: {result.data.analytics.count}</h1>
       </Table>
     </Box>
   );
