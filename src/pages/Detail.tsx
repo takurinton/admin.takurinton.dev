@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useQuery } from "urql";
 import { Box } from "@chakra-ui/react";
 import { ACenter } from '../components/text';
+import { PORTFOLIO, BLOG, PORTFOLIO_NUMBER, BLOG_NUMBER, ALL_NUMBER } from '../utils/constants';
 
 const getParam = (name: string) => {
   const url = window.location.href;
@@ -33,9 +34,9 @@ const initialQuery = (domain: number, path: string) => `
 
 export const Detail = () => {
   const domainString = getParam('domain');
-  const domain = domainString === 'takurinton.com' ?
-  1: domainString === 'blog.takurinton.com' ? 
-  2: 0;
+  const domain = domainString === PORTFOLIO ?
+  PORTFOLIO_NUMBER: domainString === BLOG ? 
+  BLOG_NUMBER: ALL_NUMBER;
   const path = getParam('path') ?? '';
   const [query, setQuery] = useState<string>(initialQuery(domain, path))
 
