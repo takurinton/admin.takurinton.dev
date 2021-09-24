@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Bar } from 'react-chartjs-2';
 import { useQuery } from "urql";
 import { 
   Box,
@@ -25,6 +26,14 @@ const getParam = (name: string) => {
   return decodeURIComponent(res[2].replace(/\+/g, " "));
 }
 
+type Data = {
+  count: number;
+  date: string;
+}[];
+
+const getDate = (date_count: Data) => date_count.map(d => d.date);
+const getCount = (date_count: Data) => date_count.map(d => d.count);
+
 const initialQuery = (domain: number, path: string) => `
 {
   analytics_by_path_for_blog(domain: ${domain}, path: "${path}") {
@@ -49,47 +58,32 @@ export const Detail = () => {
   PORTFOLIO_NUMBER: domainString === BLOG ? 
   BLOG_NUMBER: ALL_NUMBER;
   const path = getParam('path') ?? '';
-  const [query, setQuery] = useState<string>(initialQuery(domain, path))
+  const [query, setQuery] = useState<string>(initialQuery(domain, path));
+  // const [data, setData] = useState<any>({})
 
   const [result] = useQuery({
     query: query,
   });
 
-  if (result.fetching) return <H1 text={'loading...'}></H1>
+  if (result.fetching) return <H1 text={'loading...'}></H1>;
+
+  const data = {
+    labels: getDate(result.data.analytics_by_path_for_blog.date_count),
+    datasets: [
+      {
+        backgroundColor: '#ff7f7f',
+         borderColor: '#ff7f7f',
+        data: getCount(result.data.analytics_by_path_for_blog.date_count),
+        label: '閲覧数',
+      },
+    ],
+  };
+
   return (
     <Box>
       <ACenter href={`https://${domainString}${path}`} text={`https://${domainString}${path}`}></ACenter>
       <Box width={'100%'} padding={'10px 10px 10px 30px'}>
-      <H2 text={'result'}></H2>
-      <Box textAlign={'right'} marginRight={'30px'} marginBottom={'10px'}>
-        count: {result.data.analytics_by_path_for_blog.count}
-      </Box>
-      <Table variant="simple">
-        <TableCaption>takurinton analytics</TableCaption>
-          <Thead>
-            <Tr>
-              <Th>domain</Th>
-              <Th>path</Th>
-              <Th>created_at</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {
-              result.data.analytics_by_path_for_blog.analytics.map((a: { id: number, domain: string, path: string, created_at: string}) => (
-                <Tr key={a.id}>
-                  <Td>{a.domain}</Td>
-                  <Td>{a.path}</Td>
-                  <Td>{a.created_at}</Td>
-                </Tr>
-              ))
-            }
-            <Tr>
-              <Td>...</Td>
-              <Td>...</Td>
-              <Td>...</Td>
-            </Tr>
-          </Tbody>
-      </Table>
+      <Bar data={data} />
     </Box>
     </Box>
   );
