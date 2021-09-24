@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react"
 import { H2 } from './text';
 
-export const Result = ({ result, ast }: { result: any, ast: DocumentNode }) => {
+export const Result = ({ result, ast }: { result: any, ast?: DocumentNode }) => {
   return (
     <Box width={'100%'} padding={'10px 10px 10px 30px'}>
       <H2 text={'result'}></H2>
