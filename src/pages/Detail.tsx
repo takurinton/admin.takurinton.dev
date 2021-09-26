@@ -41,7 +41,7 @@ export const Detail = ({
 }: { 
   ast?: DocumentNode, 
   result: any, 
-  domainString: string, 
+  domainString: string | null, 
   path: string 
 }) => {
   const {
@@ -127,8 +127,6 @@ export const DetailForm = () => {
   const [result] = useQuery({
     query: query,
   });
-
-  console.log(result)
 
   if (query === initialQuery(domain, path)) {
     return result.fetching ? <H1 text={'loading...'}></H1>: 
