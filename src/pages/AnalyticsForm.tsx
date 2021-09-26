@@ -11,7 +11,7 @@ import { getParams } from "../utils/getParams";
 
 const initialQuery = `
 query getAnalytics {
-  analytics(domain: 0, path: "") {
+  analytics(domain: 0, path: "", page: 1) {
     count
     pages {
       next
@@ -33,7 +33,7 @@ query getAnalytics {
 }`;
 
 export const AnalyticsForm = () => {
-  const page = getParams('page');
+  const page = getParams('page') ?? 1;
   const [query, setQuery] = useState(initialQuery)
   const [ast, setAst] = useState<DocumentNode>(parse(initialQuery));
 
