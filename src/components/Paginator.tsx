@@ -1,5 +1,4 @@
-import { Box, Button, Text } from "@chakra-ui/react";
-import React from "react";
+import { Box, Flex, Button, Text } from "@chakra-ui/react";
 import { useTransformerContext } from "../context/context";
 
 export const Paginator = ({ result }: { result: any }) => {
@@ -25,18 +24,18 @@ export const Paginator = ({ result }: { result: any }) => {
   };
 
   return (
-    <Box margin={'50px auto'} width={'100%'} padding={'10px 10px 10px 30px'} position={'relative'}>
+    <Flex margin={'50px auto'} width={'100%'} padding={'10px 10px 10px 30px'} position={'relative'}>
       {
         pages.prev !== 0 ? 
-        <Button position={'absolute'} onClick={() => onClick(pages.prev)}>prev</Button> :
-        <></>
+        <Button width={'20%'} height={'50px'} onClick={() => onClick(pages.prev)}>preview</Button> :
+        <Box width={'20%'}></Box>
       }
-      <Text fontSize="md" position={'absolute'} right={0} left={0} margin={'auto'} textAlign={'center'}>{pages.current}</Text>
+      <Text fontSize="xl" fontWeight={700} textAlign={'center'} lineHeight={'50px'} height={'50px'} width={'60%'}>{pages.current}</Text>
       {
         pages.current !== pages.page_count ? 
-          <Button position={'absolute'} right={0} onClick={() => onClick(pages.next)}>next</Button> : 
-          <></>
+          <Button width={'20%'} height={'50px'} onClick={() => onClick(pages.next)}>next</Button> : 
+          <Box width={'20%'}></Box>
       }
-    </Box>
+    </Flex>
   );
 }
