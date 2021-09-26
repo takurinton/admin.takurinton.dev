@@ -3,6 +3,7 @@ import { Box, FormControl, Select, FormLabel } from "@chakra-ui/react"
 import { useForm } from '../hooks/useForm';
 import { H2 } from '../components/text';
 import { useTransformerContext } from '../context/context';
+import { getDateList } from '../utils/getDateList';
 
 export const Form = ({ result, node }: { result?: any, node: ASTNode }) => {
   const pathList = result.data.analytics.path_list;
@@ -87,12 +88,18 @@ export const Form = ({ result, node }: { result?: any, node: ASTNode }) => {
     
           <FormLabel>start</FormLabel>
           <Select name={'start'} onChange={onChange}>
-            <option value={undefined}>all</option>
+            <option value={''}>all</option>
+            {
+              getDateList().map(d => <option value={d}>{d}</option>)
+            }
           </Select>
     
           <FormLabel>end</FormLabel>
-          <Select name={'start'} onChange={onChange}>
-            <option value={undefined}>all</option>
+          <Select name={'end'} onChange={onChange}>
+            <option value={''}>all</option>
+            {
+              getDateList().map(d => <option value={d}>{d}</option>)
+            }
           </Select>
         </FormControl>
       </Box>

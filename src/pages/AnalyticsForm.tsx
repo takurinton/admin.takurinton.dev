@@ -11,7 +11,7 @@ import { getParams } from "../utils/getParams";
 
 const initialQuery = `
 query getAnalytics {
-  analytics(domain: 0, path: "", page: 1) {
+  analytics(domain: 0, path: "", page: 1, start: "", end: "") {
     count
     pages {
       next
