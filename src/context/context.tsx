@@ -3,6 +3,7 @@ import React, { useContext } from 'react';
 
 type TransformerContextType = {
   updateNode(name: string, value: string): void;
+  updatePage(page: number): void;
 };
 
 const RendererContext = React.createContext<TransformerContextType>(null as any);
@@ -37,6 +38,22 @@ export const TransformerContextProvider = ({
       })
       onChangeNode(newNode);
     },
+    updatePage(page) {
+      const newNode = visit(root, {
+        Argument: arg => {
+          if (arg.name.value === 'page') {
+            return {
+              ...arg, 
+              value: {
+                ...arg.value, 
+                value: page
+              }
+            }
+          }
+        }
+      });
+      onChangeNode(newNode);
+    }
   };
   return <RendererContext.Provider value={api}>{children}</RendererContext.Provider>;
 }

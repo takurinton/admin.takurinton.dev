@@ -6,21 +6,8 @@ export const Paginator = ({ result }: { result: any }) => {
   const pages = result.data.analytics.pages;
 
   const onClick = (page: number) => {
-    const _node = api.getCurrentNode();
-    _node.definitions.map(v => {
-      if (v.kind === 'OperationDefinition') {
-        v.selectionSet.selections.map(vv => {
-          // @ts-ignore
-          vv.arguments.map(vvv => {
-            if (vvv.name.value === 'page') {
-              vvv.value.value = page;
-              api.updateNode(_node);
-              window.scrollTo(0, 0);
-            }
-          });
-        });
-      }
-    });
+    api.updatePage(page);
+    window.scroll(0, 0);
   };
 
   return (
