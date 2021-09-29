@@ -50,7 +50,7 @@ export const Form = ({ result, node }: { result?: any, node: ASTNode }) => {
   
     const onUpdateAST = (event: React.ChangeEvent<HTMLSelectElement>) => {
       api.updateNode(event.target.name, event.target.value);
-    }
+    };
     
     return (
       <Box width={'40vw'} padding={'10px'}>
