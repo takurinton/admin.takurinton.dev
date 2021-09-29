@@ -1,8 +1,8 @@
-import { DocumentNode } from 'graphql';
+import { DocumentNode, visit } from 'graphql';
 import React, { useContext } from 'react';
 
 type TransformerContextType = {
-  updateNode(newNode: DocumentNode): void;
+  updateNode(name: string, value: string): void;
   getCurrentNode(): DocumentNode;
 };
 
@@ -22,7 +22,20 @@ export const TransformerContextProvider = ({
   onChangeNode: (root: DocumentNode) => void;
 }) => {
   const api: TransformerContextType = {
-    updateNode(newNode) {
+    updateNode(name, value) {
+      const newNode = visit(root, {
+        Argument: arg => {
+          if (arg.name.value === name) {
+            return {
+              ...arg, 
+              value: {
+                ...arg.value, 
+                value,
+              }
+            }
+          } 
+        }
+      })
       onChangeNode(newNode);
     },
     getCurrentNode() {

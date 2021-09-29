@@ -49,20 +49,7 @@ export const Form = ({ result, node }: { result?: any, node: ASTNode }) => {
     };
   
     const onUpdateAST = (event: React.ChangeEvent<HTMLSelectElement>) => {
-      const _node = api.getCurrentNode();
-      _node.definitions.map(v => {
-        if (v.kind === 'OperationDefinition') {
-          v.selectionSet.selections.map(vv => {
-            // @ts-ignore
-            vv.arguments.map(vvv => {
-              if (vvv.name.value === event.target.name) {
-                vvv.value.value = event.target.value;
-                api.updateNode(_node);
-              };
-            });
-          });
-        }
-      });
+      api.updateNode(event.target.name, event.target.value);
     }
     
     return (
