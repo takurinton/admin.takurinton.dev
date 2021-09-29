@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { Box, Flex } from '@chakra-ui/react';
 import { useQuery } from 'urql';
 import { DocumentNode, parse, print } from "graphql";

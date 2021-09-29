@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Bar } from 'react-chartjs-2';
 import { useQuery } from "urql";
-import { Box, FormControl, Select, FormLabel } from "@chakra-ui/react";
+import { Box, Select, FormLabel } from "@chakra-ui/react";
 import { DocumentNode, parse, print } from "graphql";
 import { ACenter } from '../components/text';
 import { H1 } from '../components/H1';
@@ -30,8 +30,7 @@ const initialQuery = (domain: number, path: string) => `
     }
   }
 }
-`
-
+`;
 
 export const Detail = ({ 
   ast, 
