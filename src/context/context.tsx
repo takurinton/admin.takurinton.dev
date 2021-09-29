@@ -3,7 +3,6 @@ import React, { useContext } from 'react';
 
 type TransformerContextType = {
   updateNode(name: string, value: string): void;
-  getCurrentNode(): DocumentNode;
 };
 
 const RendererContext = React.createContext<TransformerContextType>(null as any);
@@ -38,9 +37,6 @@ export const TransformerContextProvider = ({
       })
       onChangeNode(newNode);
     },
-    getCurrentNode() {
-      return root;
-    }
   };
   return <RendererContext.Provider value={api}>{children}</RendererContext.Provider>;
 }
