@@ -21,7 +21,7 @@ export const Form = ({ result, node }: { result?: any, node: ASTNode }) => {
   if (node.kind === 'OperationDefinition') {
     return (
       <Box border="1px solid white" boxSizing="border-box">
-        <Form node={node.selectionSet} result={result} />
+        <Form key={'operation_definition'} node={node.selectionSet} result={result} />
       </Box>
     );
   }
@@ -77,7 +77,7 @@ export const Form = ({ result, node }: { result?: any, node: ASTNode }) => {
           <Select name={'start'} onChange={onChange}>
             <option value={''}>all</option>
             {
-              getDateList().map(d => <option value={d}>{d}</option>)
+              getDateList().map(d => <option key={d} value={d}>{d}</option>)
             }
           </Select>
     
@@ -85,7 +85,7 @@ export const Form = ({ result, node }: { result?: any, node: ASTNode }) => {
           <Select name={'end'} onChange={onChange}>
             <option value={''}>all</option>
             {
-              getDateList().map(d => <option value={d}>{d}</option>)
+              getDateList().map(d => <option key={d} value={d}>{d}</option>)
             }
           </Select>
         </FormControl>
