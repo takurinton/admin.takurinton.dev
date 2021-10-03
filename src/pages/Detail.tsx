@@ -19,10 +19,12 @@ type Data = {
 
 const getDate = (date_count: Data) => date_count.map(d => d.date);
 const getCount = (date_count: Data) => date_count.map(d => d.count);
+const _today = new Date();
+const today = `${_today.getFullYear()}-${_today.getMonth()+1}-${_today.getDate()+1}`;
 
 const initialQuery = (domain: number, path: string) => `
 {
-  analytics_by_path_for_blog(domain: ${domain}, path: "${path}", start: "2021-08-27", end: "2021-09-25") {
+  analytics_by_path_for_blog(domain: ${domain}, path: "${path}", start: "2021-08-27", end: "${today}") {
     count
     date_count {
       date 
