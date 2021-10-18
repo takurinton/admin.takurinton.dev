@@ -61,6 +61,8 @@ export const Form = ({ result, node }: { result?: any, node: ASTNode }) => {
             <option value={'undefined'}>all</option>
             <option value={1}>takurinton.com</option>
             <option value={2}>blog.takurinton.com</option>
+            <option value={7}>takurinton.dev</option>
+            <option value={8}>blog.takurinton.dev</option>
           </Select>
     
           <FormLabel>path</FormLabel>
