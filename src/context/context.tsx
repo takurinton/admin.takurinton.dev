@@ -1,16 +1,18 @@
-import { DocumentNode, visit } from 'graphql';
-import React, { useContext } from 'react';
+import { DocumentNode, visit } from "graphql";
+import React, { useContext } from "react";
 
 type TransformerContextType = {
   updateNode(name: string, value: string): void;
   updatePage(page: number): void;
 };
 
-const RendererContext = React.createContext<TransformerContextType>(null as any);
+const RendererContext = React.createContext<TransformerContextType>(
+  null as any
+);
 
-export const  useTransformerContext = () => {
+export const useTransformerContext = () => {
   return useContext(RendererContext);
-}
+};
 
 export const TransformerContextProvider = ({
   children,
@@ -24,36 +26,38 @@ export const TransformerContextProvider = ({
   const api: TransformerContextType = {
     updateNode(name, value) {
       const newNode = visit(root, {
-        Argument: arg => {
+        Argument: (arg) => {
           if (arg.name.value === name) {
             return {
-              ...arg, 
+              ...arg,
               value: {
-                ...arg.value, 
+                ...arg.value,
                 value,
-              }
-            }
-          } 
-        }
-      })
+              },
+            };
+          }
+        },
+      });
       onChangeNode(newNode);
     },
     updatePage(page) {
       const newNode = visit(root, {
-        Argument: arg => {
-          if (arg.name.value === 'page') {
+        Argument: (arg) => {
+          if (arg.name.value === "page") {
             return {
-              ...arg, 
+              ...arg,
               value: {
-                ...arg.value, 
-                value: page
-              }
-            }
+                ...arg.value,
+                value: page,
+              },
+            };
           }
-        }
+        },
       });
       onChangeNode(newNode);
-    }
+    },
   };
-  return <RendererContext.Provider value={api}>{children}</RendererContext.Provider>;
-}
+  return (
+    <RendererContext.Provider value={api}>{children}</RendererContext.Provider>
+  );
+};
