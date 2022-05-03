@@ -1,42 +1,41 @@
 import { ASTNode } from "graphql";
-import { Box, FormControl, Select, FormLabel } from "@chakra-ui/react";
 import { useForm } from "../hooks/useForm";
-import { H2 } from "../components/text";
 import { useTransformerContext } from "../context/context";
 import { getDateList } from "../utils/getDateList";
+import { Flex, Select, Typography } from "ingred-ui";
 
 export const Form = ({ result, node }: { result?: any; node: ASTNode }) => {
   const pathList = result.data.analytics.path_list;
 
   if (node.kind === "Document") {
     return (
-      <Box>
+      <Flex>
         {node.definitions.map((def, index) => {
           return <Form key={index} node={def} result={result} />;
         })}
-      </Box>
+      </Flex>
     );
   }
 
   if (node.kind === "OperationDefinition") {
     return (
-      <Box border="1px solid white" boxSizing="border-box">
+      <Flex>
         <Form
           key={"operation_definition"}
           node={node.selectionSet}
           result={result}
         />
-      </Box>
+      </Flex>
     );
   }
 
   if (node.kind === "SelectionSet") {
     return (
-      <Box>
+      <Flex>
         {node.selections.map((def, index) => {
           return <Form key={index} node={def} result={result} />;
         })}
-      </Box>
+      </Flex>
     );
   }
 
@@ -53,61 +52,54 @@ export const Form = ({ result, node }: { result?: any; node: ASTNode }) => {
       api.updateNode(event.target.name, event.target.value);
     };
 
-    return (
-      <Box width={"40vw"} padding={"10px"}>
-        <H2 text={"data"}></H2>
-        <FormControl>
-          <FormLabel>domain</FormLabel>
-          <Select name={"domain"} onChange={onChange}>
-            <option value={"undefined"}>all</option>
-            <option value={1}>takurinton.com</option>
-            <option value={2}>blog.takurinton.com</option>
-            <option value={7}>takurinton.dev</option>
-            <option value={8}>blog.takurinton.dev</option>
-          </Select>
+    const domainOptions = [
+      { label: "takurinton.com", value: 1 },
+      { label: "blog.takurinton.com", value: 2 },
+      { label: "takurinton.dev", value: 7 },
+      { label: "blog.takurinton.dev", value: 8 },
+    ];
 
-          <FormLabel>path</FormLabel>
+    const getPathOptions = () => {
+      if (state.domain === "1") return [{ label: "/", value: "/" }];
+      return pathList.map(({ path }: { path: string }) => ({
+        label: path,
+        value: path,
+      }));
+    };
+
+    return (
+      <Flex>
+        <Typography>data</Typography>
+        <form>
+          <Typography>domain</Typography>
+          <Select name={"domain"} options={domainOptions} />
+
+          <Typography>path</Typography>
           <Select
             name={"path"}
-            onChange={onChange}
             placeholder={"pathを入力してください"}
-          >
-            {state.domain === "1" ? (
-              <option value={"/"}>{"/"}</option>
-            ) : (
-              pathList.map((path: { path: string }) => {
-                return (
-                  <option key={path.path} value={path.path}>
-                    {path.path}
-                  </option>
-                );
-              })
-            )}
-          </Select>
+            options={getPathOptions()}
+          />
 
-          <FormLabel>start</FormLabel>
-          <Select name={"start"} onChange={onChange}>
-            <option value={""}>all</option>
-            {getDateList().map((d) => (
-              <option key={d} value={d}>
-                {d}
-              </option>
-            ))}
-          </Select>
+          <Typography>start</Typography>
+          <Select
+            options={getDateList().map((date) => ({
+              label: date,
+              value: date,
+            }))}
+          />
 
-          <FormLabel>end</FormLabel>
-          <Select name={"end"} onChange={onChange}>
-            <option value={""}>all</option>
-            {getDateList().map((d) => (
-              <option key={d} value={d}>
-                {d}
-              </option>
-            ))}
-          </Select>
-        </FormControl>
-      </Box>
+          <Typography>end</Typography>
+          <Select
+            options={getDateList().map((date) => ({
+              label: date,
+              value: date,
+            }))}
+          />
+        </form>
+      </Flex>
     );
   }
 
-  return <Box>error</Box>;
+  return <Flex>error</Flex>;
 };

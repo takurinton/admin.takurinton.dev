@@ -1,11 +1,10 @@
 import { Bar } from "react-chartjs-2";
-import { Box, Select, FormLabel } from "@chakra-ui/react";
 import { DocumentNode } from "graphql";
 import { ACenter } from "../components/text";
-import { H1 } from "../components/H1";
 import { useTransformerContext } from "../context/context";
 import { useForm } from "../hooks/useForm";
 import { getDateList } from "../utils/getDateList";
+import { Flex, Select, Typography } from "ingred-ui";
 
 type Data = {
   count: number;
@@ -53,39 +52,24 @@ export const Detail = ({
 
   const dateList = getDateList();
 
+  const options = dateList.map((d) => ({ label: d, value: d }));
+
   return (
-    <Box>
-      <H1
-        text={`総閲覧数: ${result.data.analytics_by_path_for_blog.count}`}
-      ></H1>
+    <Flex>
+      <Typography>{`総閲覧数: ${result.data.analytics_by_path_for_blog.count}`}</Typography>
       <ACenter
         href={`https://${domainString}${path}`}
         text={`https://${domainString}${path}`}
       ></ACenter>
-      <Box margin={"0 auto"} width={"60vw"}>
-        <FormLabel>start</FormLabel>
-        <Select name={"start"} onChange={onChange}>
-          <option value={""}>all</option>
-          {dateList.map((d) => (
-            <option key={d} value={d}>
-              {d}
-            </option>
-          ))}
-        </Select>
-
-        <FormLabel>end</FormLabel>
-        <Select name={"end"} onChange={onChange}>
-          <option value={""}>all</option>
-          {dateList.map((d) => (
-            <option key={d} value={d}>
-              {d}
-            </option>
-          ))}
-        </Select>
-      </Box>
-      <Box width={"100%"} padding={"10px 10px 10px 30px"}>
+      <Flex>
+        <Typography>start</Typography>
+        <Select isMulti={true} options={options} />
+        <Typography>end</Typography>
+        <Select options={options} />
+      </Flex>
+      <Flex>
         <Bar data={data} />
-      </Box>
-    </Box>
+      </Flex>
+    </Flex>
   );
 };

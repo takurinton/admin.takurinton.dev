@@ -1,13 +1,12 @@
 import { useState } from "react";
-import { Box, Flex } from "@chakra-ui/react";
 import { useQuery } from "urql";
 import { DocumentNode, parse, print } from "graphql";
-import { H1 } from "../components/text";
 import { Result } from "../components/Result";
 import { Form } from "../components/Form";
 import { Paginator } from "../components/Paginator";
 import { TransformerContextProvider } from "../context/context";
 import { getParams } from "../utils/getParams";
+import { Flex, Typography } from "ingred-ui";
 
 const initialQuery = `
 query getAnalytics {
@@ -44,7 +43,7 @@ export const AnalyticsForm = () => {
   // 最初だけローディング表示する、2回目以降は form がリセットされてしまうのでやらない
   if (query === initialQuery) {
     return result.fetching ? (
-      <H1 text={"loading..."}></H1>
+      <Typography>loading...</Typography>
     ) : (
       <TransformerContextProvider
         root={ast}
@@ -54,12 +53,12 @@ export const AnalyticsForm = () => {
           console.log(print(ast));
         }}
       >
-        <Flex>
+        <Flex display="flex">
           <Form result={result} node={ast} />
-          <Box>
+          <Flex>
             <Result result={result} ast={ast} />
             <Paginator result={result} />
-          </Box>
+          </Flex>
         </Flex>
       </TransformerContextProvider>
     );
@@ -75,12 +74,12 @@ export const AnalyticsForm = () => {
           console.log(print(ast));
         }}
       >
-        <Flex>
+        <Flex display="flex">
           <Form result={result} node={ast} />
-          <Box>
+          <Flex>
             <Result result={result} ast={ast} />
             <Paginator result={result} />
-          </Box>
+          </Flex>
         </Flex>
       </TransformerContextProvider>
     </>

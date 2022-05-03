@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Flex, Typography } from "ingred-ui";
 import React from "react";
 
 export const ACenter = ({
@@ -8,10 +8,12 @@ export const ACenter = ({
   href: string;
   text: React.ReactNode;
 }) => (
-  <Box textAlign={"center"}>
-    リンク:{" "}
-    <a href={href} target={"_blank"}>
-      {text}
-    </a>
-  </Box>
+  <Flex>
+    <Typography align="center">
+      リンク:{" "}
+      <a href={href} target={"_blank"}>
+        {text}
+      </a>
+    </Typography>
+  </Flex>
 );

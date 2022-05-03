@@ -1,9 +1,8 @@
-import { ChakraProvider, Flex } from "@chakra-ui/react";
 import { Provider, createClient } from "urql";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { AnalyticsForm } from "./pages/AnalyticsForm";
 import { DetailForm } from "./pages/Detail";
-import { H1 } from "./components/text";
+import { createTheme, Flex, ThemeProvider, Typography } from "ingred-ui";
 
 const url = "http://localhost:3001/graphql";
 const client = createClient({
@@ -11,13 +10,14 @@ const client = createClient({
 });
 
 export const App = () => {
+  const theme = createTheme();
   return (
-    <ChakraProvider>
+    <ThemeProvider theme={theme}>
       <Provider value={client}>
-        <H1 text={"takurinton analytics"}></H1>
+        <Typography>takurinton analytics</Typography>
         <Router>
           <Route exact path="/">
-            <Flex margin={"0 auto"} width={"90vw"}>
+            <Flex>
               <AnalyticsForm />
             </Flex>
           </Route>
@@ -26,6 +26,6 @@ export const App = () => {
           </Route>
         </Router>
       </Provider>
-    </ChakraProvider>
+    </ThemeProvider>
   );
 };

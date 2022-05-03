@@ -1,4 +1,4 @@
-import { Box, Flex, Button, Text } from "@chakra-ui/react";
+import { Button, Flex, Typography } from "ingred-ui";
 import { useTransformerContext } from "../context/context";
 
 export const Paginator = ({ result }: { result: any }) => {
@@ -11,43 +11,19 @@ export const Paginator = ({ result }: { result: any }) => {
   };
 
   return (
-    <Flex
-      margin={"50px auto"}
-      width={"100%"}
-      padding={"10px 10px 10px 30px"}
-      position={"relative"}
-    >
+    <Flex>
       {pages.prev !== 0 ? (
-        <Button
-          width={"20%"}
-          height={"50px"}
-          onClick={() => onClick(pages.prev)}
-        >
-          preview
-        </Button>
+        <Button onClick={() => onClick(pages.prev)}>preview</Button>
       ) : (
-        <Box width={"20%"}></Box>
+        <Flex></Flex>
       )}
-      <Text
-        fontSize="xl"
-        fontWeight={700}
-        textAlign={"center"}
-        lineHeight={"50px"}
-        height={"50px"}
-        width={"60%"}
-      >
+      <Typography size="xl" weight="bold" align="center" lineHeight="50px">
         {pages.current}
-      </Text>
+      </Typography>
       {pages.current !== pages.page_count ? (
-        <Button
-          width={"20%"}
-          height={"50px"}
-          onClick={() => onClick(pages.next)}
-        >
-          next
-        </Button>
+        <Button onClick={() => onClick(pages.next)}>next</Button>
       ) : (
-        <Box width={"20%"}></Box>
+        <></>
       )}
     </Flex>
   );

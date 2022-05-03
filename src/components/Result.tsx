@@ -1,16 +1,6 @@
-import { Link } from "react-router-dom";
 import { DocumentNode } from "graphql";
-import {
-  Box,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-} from "@chakra-ui/react";
-import { H2 } from "./text";
+import { ActionButton, DataTable, Flex, Typography, useTheme } from "ingred-ui";
+import { Link } from "react-router-dom";
 
 export const Result = ({
   result,
@@ -19,49 +9,50 @@ export const Result = ({
   result: any;
   ast?: DocumentNode;
 }) => {
+  const theme = useTheme();
+  const args = {
+    data: result.data.analytics.analytics,
+    columns: [
+      {
+        name: "domain",
+        selector: (data: any) => data.domain,
+      },
+      {
+        name: "path",
+        selector: (data: any) => data.path,
+      },
+      {
+        name: "created_at",
+        selector: (data: any) => data.created_at,
+      },
+      {
+        name: "detail",
+        selector: (data: any) => (
+          <ActionButton icon="link">
+            <Link
+              to="/detail"
+              style={{
+                color: theme.palette.primary.main,
+                textDecoration: "none",
+              }}
+            >
+              詳細
+            </Link>
+          </ActionButton>
+        ),
+      },
+    ],
+  };
+
   return (
-    <Box width={"100%"} padding={"10px 10px 10px 30px"}>
-      <H2 text={"result"}></H2>
-      <Box textAlign={"right"} marginRight={"30px"} marginBottom={"10px"}>
-        count: {result.data.analytics.count}
-      </Box>
-      <Table variant="simple">
-        <TableCaption>takurinton analytics</TableCaption>
-        <Thead>
-          <Tr>
-            <Th>domain</Th>
-            <Th>path</Th>
-            <Th>created_at</Th>
-            <Th>detail</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {result.data.analytics.analytics.map(
-            (a: {
-              id: number;
-              domain: string;
-              path: string;
-              created_at: string;
-            }) => (
-              <Tr key={a.id}>
-                <Td>{a.domain}</Td>
-                <Td>{a.path}</Td>
-                <Td>{a.created_at}</Td>
-                <Td>
-                  <Link to={`/detail/?domain=${a.domain}&path=${a.path}`}>
-                    detail
-                  </Link>
-                </Td>
-              </Tr>
-            )
-          )}
-          <Tr>
-            <Td>...</Td>
-            <Td>...</Td>
-            <Td>...</Td>
-          </Tr>
-        </Tbody>
-      </Table>
-    </Box>
+    <Flex>
+      <Typography component="h2">result</Typography>
+      <Flex>
+        <Typography align="right">
+          count: {result.data.analytics.count}
+        </Typography>
+      </Flex>
+      <DataTable {...args} />
+    </Flex>
   );
 };
