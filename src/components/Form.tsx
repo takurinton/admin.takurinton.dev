@@ -54,9 +54,9 @@ export const Form = ({ result, node }: { result?: any; node: ASTNode }) => {
     const [startDate, setStartDate] = useState(moment().set("date", 1));
     const [endDate, setEndDate] = useState(moment());
 
-    const onChange = (name: string, newValue: string): void => {
+    const onChange = (name: string, newValue: string | undefined): void => {
       handleChange(name, newValue);
-      onUpdateAST(name, newValue);
+      onUpdateAST(name, newValue ?? "");
     };
 
     const onUpdateAST = (name: string, newValue: string) => {
@@ -87,14 +87,18 @@ export const Form = ({ result, node }: { result?: any; node: ASTNode }) => {
     }) => {
       setStartDate(startDate);
       setEndDate(endDate);
-      const start = `${startDate.format("YYYY")}-${startDate.format(
-        "MM"
-      )}-${startDate.format("DD")}`;
-      const end = `${endDate.format("YYYY")}-${endDate.format(
-        "MM"
-      )}-${endDate.format("DD")}`;
-      onChange("start", start ?? undefined);
-      onChange("end", end ?? undefined);
+      const start = startDate
+        ? `${startDate.format("YYYY")}-${startDate.format(
+            "MM"
+          )}-${startDate.format("DD")}`
+        : undefined;
+      const end = endDate
+        ? `${endDate.format("YYYY")}-${endDate.format("MM")}-${endDate.format(
+            "DD"
+          )}`
+        : undefined;
+      onChange("start", start);
+      onChange("end", end);
     };
 
     return (

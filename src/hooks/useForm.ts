@@ -14,8 +14,7 @@ export const useForm = () => {
     end: "",
   });
 
-  const handleChange = (name: string, newValue: string) => {
-    console.log(name, newValue);
+  const handleChange = (name: string, newValue: string | undefined) => {
     const _state = { ...state, [name]: newValue };
     if (_state.domain === "undefined") _state.domain = undefined;
     if (_state.path === "") _state.path = undefined;
