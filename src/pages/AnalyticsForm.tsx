@@ -7,6 +7,7 @@ import { Paginator } from "../components/Paginator";
 import { TransformerContextProvider } from "../context/context";
 import { getParams } from "../utils/getParams";
 import { Flex, Typography } from "ingred-ui";
+import styled from "styled-components";
 
 const initialQuery = `
 query getAnalytics {
@@ -54,11 +55,13 @@ export const AnalyticsForm = () => {
         }}
       >
         <Flex display="flex">
-          <Form result={result} node={ast} />
-          <Flex>
+          <Container>
+            <Form result={result} node={ast} />
+          </Container>
+          <Container>
             <Result result={result} ast={ast} />
             <Paginator result={result} />
-          </Flex>
+          </Container>
         </Flex>
       </TransformerContextProvider>
     );
@@ -85,3 +88,8 @@ export const AnalyticsForm = () => {
     </>
   );
 };
+
+const Container = styled.div`
+  margin: 0 2%;
+  width: 46%;
+`;

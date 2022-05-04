@@ -1,6 +1,7 @@
 import { DocumentNode } from "graphql";
 import { ActionButton, DataTable, Flex, Typography, useTheme } from "ingred-ui";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
 
 export const Result = ({
   result,
