@@ -1,3 +1,4 @@
+import { OptionType } from "ingred-ui";
 import { useState } from "react";
 
 export const useForm = () => {
@@ -13,12 +14,12 @@ export const useForm = () => {
     end: "",
   });
 
-  const handleChange = (eve: React.ChangeEvent<HTMLSelectElement>) => {
-    const _state = { ...state, [eve.target.name]: eve.target.value };
+  const handleChange = (name: string, newValue: string) => {
+    console.log(name, newValue);
+    const _state = { ...state, [name]: newValue };
     if (_state.domain === "undefined") _state.domain = undefined;
     if (_state.path === "") _state.path = undefined;
     setState(_state);
-    console.log(_state);
   };
 
   return {

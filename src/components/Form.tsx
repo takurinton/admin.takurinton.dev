@@ -1,8 +1,16 @@
 import { ASTNode } from "graphql";
 import { useForm } from "../hooks/useForm";
 import { useTransformerContext } from "../context/context";
-import { getDateList } from "../utils/getDateList";
-import { Flex, Select, Typography } from "ingred-ui";
+import {
+  DateRangePicker,
+  Flex,
+  OptionType,
+  Select,
+  Typography,
+} from "ingred-ui";
+import "./_datepicker.css";
+import moment from "moment";
+import { useState } from "react";
 
 export const Form = ({ result, node }: { result?: any; node: ASTNode }) => {
   const pathList = result.data.analytics.path_list;
@@ -42,14 +50,17 @@ export const Form = ({ result, node }: { result?: any; node: ASTNode }) => {
   if (node.kind === "Field") {
     const api = useTransformerContext();
     const { handleChange, state } = useForm();
+    // custom hooks で管理したいけど、moment 形式ではないので別で管理する
+    const [startDate, setStartDate] = useState(moment().set("date", 1));
+    const [endDate, setEndDate] = useState(moment());
 
-    const onChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-      handleChange(e);
-      onUpdateAST(e);
+    const onChange = (name: string, newValue: string): void => {
+      handleChange(name, newValue);
+      onUpdateAST(name, newValue);
     };
 
-    const onUpdateAST = (event: React.ChangeEvent<HTMLSelectElement>) => {
-      api.updateNode(event.target.name, event.target.value);
+    const onUpdateAST = (name: string, newValue: string) => {
+      api.updateNode(name, newValue);
     };
 
     const domainOptions = [
@@ -67,35 +78,60 @@ export const Form = ({ result, node }: { result?: any; node: ASTNode }) => {
       }));
     };
 
+    const handleChangeDates = ({
+      startDate,
+      endDate,
+    }: {
+      startDate: moment.Moment;
+      endDate: moment.Moment;
+    }) => {
+      setStartDate(startDate);
+      setEndDate(endDate);
+      const start = `${startDate.format("YYYY")}-${startDate.format(
+        "MM"
+      )}-${startDate.format("DD")}`;
+      const end = `${endDate.format("YYYY")}-${endDate.format(
+        "MM"
+      )}-${endDate.format("DD")}`;
+      onChange("start", start ?? undefined);
+      onChange("end", end ?? undefined);
+    };
+
     return (
       <Flex>
         <Typography>data</Typography>
         <form>
           <Typography>domain</Typography>
-          <Select name={"domain"} options={domainOptions} />
+          <Select
+            name={"domain"}
+            options={domainOptions}
+            onChange={(newValue) => {
+              // なぜか型安全にならない
+              // @ts-ignore
+              onChange("domain", newValue.value);
+            }}
+          />
 
           <Typography>path</Typography>
           <Select
             name={"path"}
             placeholder={"pathを入力してください"}
             options={getPathOptions()}
+            onChange={(newValue) => {
+              // なぜか型安全にならない
+              // @ts-ignore
+              onChange("path", newValue.value);
+            }}
           />
 
-          <Typography>start</Typography>
-          <Select
-            options={getDateList().map((date) => ({
-              label: date,
-              value: date,
-            }))}
-          />
-
-          <Typography>end</Typography>
-          <Select
-            options={getDateList().map((date) => ({
-              label: date,
-              value: date,
-            }))}
-          />
+          <Typography>date</Typography>
+          <div style={{ height: "400px" }}>
+            <DateRangePicker
+              startDate={startDate}
+              endDate={endDate}
+              onDatesChange={handleChangeDates}
+            />
+          </div>
         </form>
       </Flex>
     );
