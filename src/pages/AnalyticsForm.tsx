@@ -1,13 +1,12 @@
 import { useState } from "react";
-import { Box, Flex } from "@chakra-ui/react";
 import { useQuery } from "urql";
 import { DocumentNode, parse, print } from "graphql";
-import { H1 } from "../components/text";
 import { Result } from "../components/Result";
 import { Form } from "../components/Form";
 import { Paginator } from "../components/Paginator";
 import { TransformerContextProvider } from "../context/context";
-import { getParams } from "../utils/getParams";
+import { Flex, Typography } from "ingred-ui";
+import styled from "styled-components";
 
 const initialQuery = `
 query getAnalytics {
@@ -33,7 +32,6 @@ query getAnalytics {
 }`;
 
 export const AnalyticsForm = () => {
-  const page = getParams("page") ?? 1;
   const [query, setQuery] = useState(initialQuery);
   const [ast, setAst] = useState<DocumentNode>(parse(initialQuery));
 
@@ -44,22 +42,23 @@ export const AnalyticsForm = () => {
   // 最初だけローディング表示する、2回目以降は form がリセットされてしまうのでやらない
   if (query === initialQuery) {
     return result.fetching ? (
-      <H1 text={"loading..."}></H1>
+      <Typography>loading...</Typography>
     ) : (
       <TransformerContextProvider
         root={ast}
         onChangeNode={(ast) => {
           setAst(ast);
           setQuery(print(ast));
-          console.log(print(ast));
         }}
       >
-        <Flex>
-          <Form result={result} node={ast} />
-          <Box>
+        <Flex display="flex">
+          <Container>
+            <Form result={result} node={ast} />
+          </Container>
+          <Container>
             <Result result={result} ast={ast} />
             <Paginator result={result} />
-          </Box>
+          </Container>
         </Flex>
       </TransformerContextProvider>
     );
@@ -72,17 +71,23 @@ export const AnalyticsForm = () => {
         onChangeNode={(ast) => {
           setAst(ast);
           setQuery(print(ast));
-          console.log(print(ast));
         }}
       >
-        <Flex>
-          <Form result={result} node={ast} />
-          <Box>
+        <Flex display="flex">
+          <Container>
+            <Form result={result} node={ast} />
+          </Container>
+          <Container>
             <Result result={result} ast={ast} />
             <Paginator result={result} />
-          </Box>
+          </Container>
         </Flex>
       </TransformerContextProvider>
     </>
   );
 };
+
+const Container = styled.div`
+  margin: 0 2%;
+  width: 46%;
+`;

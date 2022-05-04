@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "urql";
 import { DocumentNode, parse, print } from "graphql";
-import { H1 } from "../components/H1";
 import {
   PORTFOLIO,
   BLOG,
@@ -12,6 +11,7 @@ import {
 import { getParams } from "../utils/getParams";
 import { TransformerContextProvider } from "../context/context";
 import { Detail } from "../components/Detail";
+import { Typography } from "ingred-ui";
 
 const now = new Date();
 const today = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate() + 1}`;
@@ -43,12 +43,12 @@ export const DetailForm = () => {
   );
 
   const [result] = useQuery({
-    query: query,
+    query,
   });
 
   if (query === initialQuery(domain, path)) {
     return result.fetching ? (
-      <H1 text={"loading..."}></H1>
+      <Typography>loading...</Typography>
     ) : (
       <TransformerContextProvider
         root={ast}

@@ -1,113 +1,145 @@
 import { ASTNode } from "graphql";
-import { Box, FormControl, Select, FormLabel } from "@chakra-ui/react";
 import { useForm } from "../hooks/useForm";
-import { H2 } from "../components/text";
 import { useTransformerContext } from "../context/context";
-import { getDateList } from "../utils/getDateList";
+import {
+  DateRangePicker,
+  Flex,
+  OptionType,
+  Select,
+  Typography,
+} from "ingred-ui";
+import "./_datepicker.css";
+import moment from "moment";
+import { useState } from "react";
 
 export const Form = ({ result, node }: { result?: any; node: ASTNode }) => {
   const pathList = result.data.analytics.path_list;
 
   if (node.kind === "Document") {
     return (
-      <Box>
+      <Flex>
         {node.definitions.map((def, index) => {
           return <Form key={index} node={def} result={result} />;
         })}
-      </Box>
+      </Flex>
     );
   }
 
   if (node.kind === "OperationDefinition") {
     return (
-      <Box border="1px solid white" boxSizing="border-box">
+      <Flex>
         <Form
           key={"operation_definition"}
           node={node.selectionSet}
           result={result}
         />
-      </Box>
+      </Flex>
     );
   }
 
   if (node.kind === "SelectionSet") {
     return (
-      <Box>
+      <Flex>
         {node.selections.map((def, index) => {
           return <Form key={index} node={def} result={result} />;
         })}
-      </Box>
+      </Flex>
     );
   }
 
   if (node.kind === "Field") {
     const api = useTransformerContext();
     const { handleChange, state } = useForm();
+    // custom hooks で管理したいけど、moment 形式ではないので別で管理する
+    const [startDate, setStartDate] = useState(moment().set("date", 1));
+    const [endDate, setEndDate] = useState(moment());
 
-    const onChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-      handleChange(e);
-      onUpdateAST(e);
+    const onChange = (name: string, newValue: string | undefined): void => {
+      handleChange(name, newValue);
+      onUpdateAST(name, newValue ?? "");
     };
 
-    const onUpdateAST = (event: React.ChangeEvent<HTMLSelectElement>) => {
-      api.updateNode(event.target.name, event.target.value);
+    const onUpdateAST = (name: string, newValue: string) => {
+      api.updateNode(name, newValue);
+    };
+
+    const domainOptions = [
+      { label: "takurinton.com", value: 1 },
+      { label: "blog.takurinton.com", value: 2 },
+      { label: "takurinton.dev", value: 7 },
+      { label: "blog.takurinton.dev", value: 8 },
+    ];
+
+    const getPathOptions = () => {
+      if (state.domain === "1") return [{ label: "/", value: "/" }];
+      return pathList.map(({ path }: { path: string }) => ({
+        label: path,
+        value: path,
+      }));
+    };
+
+    const handleChangeDates = ({
+      startDate,
+      endDate,
+    }: {
+      startDate: moment.Moment;
+      endDate: moment.Moment;
+    }) => {
+      setStartDate(startDate);
+      setEndDate(endDate);
+      const start = startDate
+        ? `${startDate.format("YYYY")}-${startDate.format(
+            "MM"
+          )}-${startDate.format("DD")}`
+        : undefined;
+      const end = endDate
+        ? `${endDate.format("YYYY")}-${endDate.format("MM")}-${endDate.format(
+            "DD"
+          )}`
+        : undefined;
+      onChange("start", start);
+      onChange("end", end);
     };
 
     return (
-      <Box width={"40vw"} padding={"10px"}>
-        <H2 text={"data"}></H2>
-        <FormControl>
-          <FormLabel>domain</FormLabel>
-          <Select name={"domain"} onChange={onChange}>
-            <option value={"undefined"}>all</option>
-            <option value={1}>takurinton.com</option>
-            <option value={2}>blog.takurinton.com</option>
-            <option value={7}>takurinton.dev</option>
-            <option value={8}>blog.takurinton.dev</option>
-          </Select>
+      <Flex>
+        <Typography>data</Typography>
+        <form>
+          <Typography>domain</Typography>
+          <Select
+            name={"domain"}
+            options={domainOptions}
+            onChange={(newValue) => {
+              // なぜか型安全にならない
+              // @ts-ignore
+              onChange("domain", newValue ? newValue.value : undefined);
+            }}
+          />
 
-          <FormLabel>path</FormLabel>
+          <Typography>path</Typography>
           <Select
             name={"path"}
-            onChange={onChange}
             placeholder={"pathを入力してください"}
-          >
-            {state.domain === "1" ? (
-              <option value={"/"}>{"/"}</option>
-            ) : (
-              pathList.map((path: { path: string }) => {
-                return (
-                  <option key={path.path} value={path.path}>
-                    {path.path}
-                  </option>
-                );
-              })
-            )}
-          </Select>
+            options={getPathOptions()}
+            onChange={(newValue) => {
+              // なぜか型安全にならない
+              // @ts-ignore
+              onChange("path", newValue ? newValue.value : undefined);
+            }}
+          />
 
-          <FormLabel>start</FormLabel>
-          <Select name={"start"} onChange={onChange}>
-            <option value={""}>all</option>
-            {getDateList().map((d) => (
-              <option key={d} value={d}>
-                {d}
-              </option>
-            ))}
-          </Select>
-
-          <FormLabel>end</FormLabel>
-          <Select name={"end"} onChange={onChange}>
-            <option value={""}>all</option>
-            {getDateList().map((d) => (
-              <option key={d} value={d}>
-                {d}
-              </option>
-            ))}
-          </Select>
-        </FormControl>
-      </Box>
+          <Typography>date</Typography>
+          <div style={{ height: "400px", width: "100%" }}>
+            <DateRangePicker
+              startDate={startDate}
+              endDate={endDate}
+              onDatesChange={handleChangeDates}
+            />
+          </div>
+        </form>
+      </Flex>
     );
   }
 
-  return <Box>error</Box>;
+  return <Flex>error</Flex>;
 };
