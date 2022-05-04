@@ -43,7 +43,7 @@ export const DetailForm = () => {
   );
 
   const [result] = useQuery({
-    query: query,
+    query,
   });
 
   if (query === initialQuery(domain, path)) {

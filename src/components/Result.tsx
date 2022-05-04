@@ -1,7 +1,6 @@
 import { DocumentNode } from "graphql";
 import { ActionButton, DataTable, Flex, Typography, useTheme } from "ingred-ui";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
 
 export const Result = ({
   result,
@@ -31,7 +30,7 @@ export const Result = ({
         selector: (data: any) => (
           <ActionButton icon="link">
             <Link
-              to="/detail"
+              to={`/detail/?domain=${data.domain}&path=${data.path}`}
               style={{
                 color: theme.palette.primary.main,
                 textDecoration: "none",

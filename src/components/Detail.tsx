@@ -3,8 +3,9 @@ import { DocumentNode } from "graphql";
 import { ACenter } from "../components/text";
 import { useTransformerContext } from "../context/context";
 import { useForm } from "../hooks/useForm";
-import { getDateList } from "../utils/getDateList";
-import { Flex, Select, Typography } from "ingred-ui";
+import { DateRangePicker, Flex, Select, Typography } from "ingred-ui";
+import { useState } from "react";
+import moment from "moment";
 
 type Data = {
   count: number;
@@ -26,16 +27,18 @@ export const Detail = ({
   path: string;
 }) => {
   const { handleChange, state } = useForm();
+  const [startDate, setStartDate] = useState(moment().set("date", 1));
+  const [endDate, setEndDate] = useState(moment());
 
   const api = useTransformerContext();
 
-  const onChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
-    handleChange(e);
-    onUpdateAST(e);
+  const onChange = (name: string, newValue: string | undefined): void => {
+    handleChange(name, newValue);
+    onUpdateAST(name, newValue ?? "");
   };
 
-  const onUpdateAST = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    api.updateNode(event.target.name, event.target.value);
+  const onUpdateAST = (name: string, newValue: string) => {
+    api.updateNode(name, newValue);
   };
 
   const data = {
@@ -50,9 +53,28 @@ export const Detail = ({
     ],
   };
 
-  const dateList = getDateList();
-
-  const options = dateList.map((d) => ({ label: d, value: d }));
+  const handleChangeDates = ({
+    startDate,
+    endDate,
+  }: {
+    startDate: moment.Moment;
+    endDate: moment.Moment;
+  }) => {
+    setStartDate(startDate);
+    setEndDate(endDate);
+    const start = startDate
+      ? `${startDate.format("YYYY")}-${startDate.format(
+          "MM"
+        )}-${startDate.format("DD")}`
+      : undefined;
+    const end = endDate
+      ? `${endDate.format("YYYY")}-${endDate.format("MM")}-${endDate.format(
+          "DD"
+        )}`
+      : undefined;
+    onChange("start", start);
+    onChange("end", end);
+  };
 
   return (
     <Flex>
@@ -62,12 +84,17 @@ export const Detail = ({
         text={`https://${domainString}${path}`}
       ></ACenter>
       <Flex>
-        <Typography>start</Typography>
-        <Select isMulti={true} options={options} />
-        <Typography>end</Typography>
-        <Select options={options} />
+        <Typography>日付</Typography>
+        <div style={{ width: "100%" }}>
+          <DateRangePicker
+            startDate={startDate}
+            endDate={endDate}
+            onDatesChange={handleChangeDates}
+          />
+        </div>
       </Flex>
       <Flex>
+        <Typography>グラフ</Typography>
         <Bar data={data} />
       </Flex>
     </Flex>
