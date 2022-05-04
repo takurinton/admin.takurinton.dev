@@ -74,11 +74,13 @@ export const AnalyticsForm = () => {
         }}
       >
         <Flex display="flex">
-          <Form result={result} node={ast} />
-          <Flex>
+          <Container>
+            <Form result={result} node={ast} />
+          </Container>
+          <Container>
             <Result result={result} ast={ast} />
             <Paginator result={result} />
-          </Flex>
+          </Container>
         </Flex>
       </TransformerContextProvider>
     </>

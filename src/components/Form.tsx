@@ -112,7 +112,7 @@ export const Form = ({ result, node }: { result?: any; node: ASTNode }) => {
             onChange={(newValue) => {
               // なぜか型安全にならない
               // @ts-ignore
-              onChange("domain", newValue.value);
+              onChange("domain", newValue ? newValue.value : undefined);
             }}
           />
 
@@ -124,12 +124,12 @@ export const Form = ({ result, node }: { result?: any; node: ASTNode }) => {
             onChange={(newValue) => {
               // なぜか型安全にならない
               // @ts-ignore
-              onChange("path", newValue.value);
+              onChange("path", newValue ? newValue.value : undefined);
             }}
           />
 
           <Typography>date</Typography>
-          <div style={{ height: "400px" }}>
+          <div style={{ height: "400px", width: "100%" }}>
             <DateRangePicker
               startDate={startDate}
               endDate={endDate}
