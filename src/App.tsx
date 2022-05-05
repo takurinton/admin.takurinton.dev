@@ -239,6 +239,9 @@ const AppNavigation = ({
                 onClick={loginWithRedirect}
               />
             </NavigationRail.Content>
+            <NavigationRail.Footer>
+              <NavigationRail.Fixture />
+            </NavigationRail.Footer>
           </NavigationRail>
           <NavigationRail.MainContent>
             <div style={{ paddingLeft: "20px" }}>
