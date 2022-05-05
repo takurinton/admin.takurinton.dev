@@ -8,9 +8,9 @@ import {
 import { AnalyticsForm } from "./pages/AnalyticsForm";
 import { DetailForm } from "./pages/Detail";
 import {
+  Button,
   createTheme,
   Flex,
-  Icon,
   NavigationRail,
   ThemeProvider,
   Typography,
@@ -18,6 +18,11 @@ import {
 } from "ingred-ui";
 import styled from "styled-components";
 import { ReactNode, useEffect, useState } from "react";
+import {
+  LogoutOptions,
+  RedirectLoginOptions,
+  useAuth0,
+} from "@auth0/auth0-react";
 
 const localUrl = "http://localhost:3001/graphql";
 const url = "https://api-takurinton-dev.onrender.com/graphql";
@@ -26,12 +31,14 @@ const client = createClient({
 });
 
 export const App = () => {
+  const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
   const theme = createTheme({
     palette: {
       primary: {
         highlight: "#F2F9FC",
         light: "#ffbae0",
         main: "#ff69b4",
+        dark: "#da69b4",
       },
     },
   });
@@ -41,7 +48,11 @@ export const App = () => {
         {/* <Toast.Provider placement="top-center"> */}
         <Main>
           <Router>
-            <AppNavigation>
+            <AppNavigation
+              logout={logout}
+              isAuthenticated={isAuthenticated}
+              loginWithRedirect={loginWithRedirect}
+            >
               <AppRoute />
             </AppNavigation>
           </Router>
@@ -98,7 +109,19 @@ const AppRoute = () => (
   </div>
 );
 
-const AppNavigation = ({ children }: { children: ReactNode }) => {
+const AppNavigation = ({
+  children,
+  logout,
+  isAuthenticated,
+  loginWithRedirect,
+}: {
+  children: ReactNode;
+  logout: (options?: LogoutOptions | undefined) => void;
+  isAuthenticated: boolean;
+  loginWithRedirect: (
+    options?: RedirectLoginOptions | undefined
+  ) => Promise<void>;
+}) => {
   const history = useHistory();
   const theme = useTheme();
   const color = theme.palette.primary.main;
@@ -106,80 +129,115 @@ const AppNavigation = ({ children }: { children: ReactNode }) => {
     history.location.pathname
   );
 
+  useEffect(() => {
+    if (!isAuthenticated) {
+      history.push("/");
+    }
+  }, [history.location.pathname]);
+
   return (
-    <NavigationRail.Container>
-      <NavigationRail>
-        <NavigationRail.Content>
-          <NavigationRail.Menu
-            color={color}
-            title="home"
-            isActive={isActivePathname === "/"}
-            iconName="dashboard"
-            onClick={() => {
-              setIsActivePathname("/");
-              history.push("/");
-            }}
-          />
-          <NavigationRail.Menu
-            color={color}
-            title="blog"
-            isActive={isActivePathname === "/blog"}
-            iconName="pencil"
-            onClick={() => {
-              setIsActivePathname("/blog");
-              history.push("/blog");
-            }}
-          />
-          <NavigationRail.Menu
-            color={color}
-            title="portfolio"
-            isActive={isActivePathname === "/portfolio"}
-            iconName="profile"
-            onClick={() => {
-              setIsActivePathname("/portfolio");
-              history.push("/portfolio");
-            }}
-          />
-          <NavigationRail.Menu
-            color={color}
-            title="analytics"
-            isActive={isActivePathname === "/analytics"}
-            iconName="bar_chart"
-            onClick={() => {
-              setIsActivePathname("/analytics");
-              history.push("/analytics");
-            }}
-          />
-          <NavigationRail.ExpantionMenu
-            color={color}
-            title="Setting"
-            isActive={isActivePathname.indexOf("/settings") !== -1}
-            iconName="setting"
-            onClick={() => {
-              setIsActivePathname("/settings");
-              history.push("/settings");
-            }}
-            expantionList={[
-              <NavigationRail.ExpantionMenuItem
+    <>
+      {isAuthenticated ? (
+        <NavigationRail.Container>
+          <NavigationRail>
+            <NavigationRail.Content>
+              <NavigationRail.Menu
                 color={color}
-                isActive={isActivePathname === "/settings/user"}
-                title="user setting"
+                title="home"
+                isActive={isActivePathname === "/"}
+                iconName="dashboard"
                 onClick={() => {
-                  setIsActivePathname("/settings/user");
-                  history.push("/settings/user");
+                  setIsActivePathname("/");
+                  history.push("/");
                 }}
-              />,
-              <NavigationRail.ExpantionMenuItem
+              />
+              <NavigationRail.Menu
                 color={color}
-                isActive={false}
-                title="logout"
-              />,
-            ]}
-          />
-        </NavigationRail.Content>
-      </NavigationRail>
-      <NavigationRail.MainContent>{children}</NavigationRail.MainContent>
-    </NavigationRail.Container>
+                title="blog"
+                isActive={isActivePathname === "/blog"}
+                iconName="pencil"
+                onClick={() => {
+                  setIsActivePathname("/blog");
+                  history.push("/blog");
+                }}
+              />
+              <NavigationRail.Menu
+                color={color}
+                title="portfolio"
+                isActive={isActivePathname === "/portfolio"}
+                iconName="profile"
+                onClick={() => {
+                  setIsActivePathname("/portfolio");
+                  history.push("/portfolio");
+                }}
+              />
+              <NavigationRail.Menu
+                color={color}
+                title="analytics"
+                isActive={isActivePathname === "/analytics"}
+                iconName="bar_chart"
+                onClick={() => {
+                  setIsActivePathname("/analytics");
+                  history.push("/analytics");
+                }}
+              />
+              <NavigationRail.ExpantionMenu
+                color={color}
+                title="Setting"
+                isActive={isActivePathname.indexOf("/settings") !== -1}
+                iconName="setting"
+                onClick={() => {
+                  setIsActivePathname("/settings");
+                  history.push("/settings");
+                }}
+                expantionList={[
+                  <NavigationRail.ExpantionMenuItem
+                    color={color}
+                    isActive={isActivePathname === "/settings/user"}
+                    title="user setting"
+                    onClick={() => {
+                      setIsActivePathname("/settings/user");
+                      history.push("/settings/user");
+                    }}
+                  />,
+                  <NavigationRail.ExpantionMenuItem
+                    color={color}
+                    isActive={false}
+                    title="logout"
+                    onClick={() => {
+                      logout({ returnTo: window.location.origin });
+                    }}
+                  />,
+                ]}
+              />
+            </NavigationRail.Content>
+          </NavigationRail>
+          <NavigationRail.MainContent>{children}</NavigationRail.MainContent>
+        </NavigationRail.Container>
+      ) : (
+        <NavigationRail.Container>
+          <NavigationRail>
+            <NavigationRail.Content>
+              <NavigationRail.Menu
+                color={color}
+                title="login"
+                isActive={true}
+                iconName="logout"
+                onClick={loginWithRedirect}
+              />
+            </NavigationRail.Content>
+          </NavigationRail>
+          <NavigationRail.MainContent>
+            <div style={{ paddingLeft: "20px" }}>
+              <Typography>ログインしてください。</Typography>
+              <Button onClick={loginWithRedirect} style={{ width: "100px" }}>
+                login
+              </Button>
+            </div>
+          </NavigationRail.MainContent>
+        </NavigationRail.Container>
+      )}
+    </>
   );
 };
 
