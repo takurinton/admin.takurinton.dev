@@ -12,8 +12,6 @@ import {
   Flex,
   NavigationRail,
   ThemeProvider,
-  Toast,
-  Tooltip,
   Typography,
 } from "ingred-ui";
 import styled from "styled-components";
@@ -22,7 +20,7 @@ import { ReactNode, useEffect, useState } from "react";
 const localUrl = "http://localhost:3001/graphql";
 const url = "https://api-takurinton-dev.onrender.com/graphql";
 const client = createClient({
-  url: localUrl,
+  url,
 });
 
 export const App = () => {
