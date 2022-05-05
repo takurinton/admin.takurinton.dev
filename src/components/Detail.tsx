@@ -3,9 +3,10 @@ import { DocumentNode } from "graphql";
 import { ACenter } from "../components/text";
 import { useTransformerContext } from "../context/context";
 import { useForm } from "../hooks/useForm";
-import { DateRangePicker, Flex, Select, Typography } from "ingred-ui";
+import { DateRangePicker, Flex, Select, Table, Typography } from "ingred-ui";
 import { useState } from "react";
 import moment from "moment";
+import styled from "styled-components";
 
 type Data = {
   count: number;
@@ -78,25 +79,54 @@ export const Detail = ({
 
   return (
     <Flex>
-      <Typography>{`総閲覧数: ${result.data.analytics_by_path_for_blog.count}`}</Typography>
-      <ACenter
-        href={`https://${domainString}${path}`}
-        text={`https://${domainString}${path}`}
-      ></ACenter>
-      <Flex>
-        <Typography>日付</Typography>
-        <div style={{ width: "100%" }}>
-          <DateRangePicker
-            startDate={startDate}
-            endDate={endDate}
-            onDatesChange={handleChangeDates}
-          />
-        </div>
-      </Flex>
-      <Flex>
-        <Typography>グラフ</Typography>
-        <Line data={data} />
+      <Flex display="flex">
+        <DateContainer>
+          <Table>
+            <Table.Body>
+              <Table.Row>
+                <Table.HeaderCell width="100px">総閲覧数</Table.HeaderCell>
+                <Table.Cell>
+                  {`${result.data.analytics_by_path_for_blog.count}`}
+                </Table.Cell>
+              </Table.Row>
+              <Table.Row>
+                <Table.HeaderCell width="100px">リンク</Table.HeaderCell>
+                <Table.Cell>
+                  <a
+                    href={`https://${domainString}${path}`}
+                  >{`https://${domainString}${path}`}</a>
+                </Table.Cell>
+              </Table.Row>
+              <Table.Row>
+                <Table.HeaderCell width="100px">帰還指定</Table.HeaderCell>
+                <Table.Cell>
+                  <div style={{ width: "100%" }}>
+                    <DateRangePicker
+                      startDate={startDate}
+                      endDate={endDate}
+                      onDatesChange={handleChangeDates}
+                    />
+                  </div>
+                </Table.Cell>
+              </Table.Row>
+            </Table.Body>
+          </Table>
+        </DateContainer>
+        <GraphContainer>
+          <Line data={data} />
+        </GraphContainer>
       </Flex>
     </Flex>
   );
 };
+
+const DateContainer = styled.div`
+  padding-top: 30px;
+  margin-left: 2%;
+  width: 28%;
+`;
+const GraphContainer = styled.div`
+  margin-right: 3%;
+  margin-left: 1%;
+  width: 66%;
+`;

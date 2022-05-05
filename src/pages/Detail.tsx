@@ -15,7 +15,7 @@ import {
 import { getParams } from "../utils/getParams";
 import { TransformerContextProvider } from "../context/context";
 import { Detail } from "../components/Detail";
-import { Typography } from "ingred-ui";
+import { Flex, Spinner, Typography } from "ingred-ui";
 
 const now = new Date();
 const today = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate() + 1}`;
@@ -64,7 +64,9 @@ export const DetailForm = () => {
 
   if (query === initialQuery(domain, path)) {
     return result.fetching ? (
-      <Typography>loading...</Typography>
+      <Flex style={{ width: "fit-content", margin: "auto", padding: "40px" }}>
+        <Spinner />
+      </Flex>
     ) : (
       <TransformerContextProvider
         root={ast}

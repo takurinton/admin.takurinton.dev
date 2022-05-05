@@ -10,9 +10,11 @@ import { DetailForm } from "./pages/Detail";
 import {
   createTheme,
   Flex,
+  Icon,
   NavigationRail,
   ThemeProvider,
   Typography,
+  useTheme,
 } from "ingred-ui";
 import styled from "styled-components";
 import { ReactNode, useEffect, useState } from "react";
@@ -54,7 +56,7 @@ const AppRoute = () => (
   <div style={{ padding: "20px 0 0 20px" }}>
     <Route exact path="/">
       <Typography component="h1" size="xxxxl">
-        takurinton管理画面n
+        takurinton管理画面
       </Typography>
     </Route>
     <Route exact path="/blog">
@@ -77,7 +79,7 @@ const AppRoute = () => (
     </Route>
     <Route exact path="/analytics/detail">
       <Typography component="h1" size="xxxxl">
-        ポートフォリオ詳細
+        アナリティクス詳細
       </Typography>
       <DetailForm />
     </Route>
@@ -98,6 +100,8 @@ const AppRoute = () => (
 
 const AppNavigation = ({ children }: { children: ReactNode }) => {
   const history = useHistory();
+  const theme = useTheme();
+  const color = theme.palette.primary.main;
   const [isActivePathname, setIsActivePathname] = useState(
     history.location.pathname
   );
@@ -107,6 +111,7 @@ const AppNavigation = ({ children }: { children: ReactNode }) => {
       <NavigationRail>
         <NavigationRail.Content>
           <NavigationRail.Menu
+            color={color}
             title="home"
             isActive={isActivePathname === "/"}
             iconName="dashboard"
@@ -116,6 +121,7 @@ const AppNavigation = ({ children }: { children: ReactNode }) => {
             }}
           />
           <NavigationRail.Menu
+            color={color}
             title="blog"
             isActive={isActivePathname === "/blog"}
             iconName="pencil"
@@ -125,6 +131,7 @@ const AppNavigation = ({ children }: { children: ReactNode }) => {
             }}
           />
           <NavigationRail.Menu
+            color={color}
             title="portfolio"
             isActive={isActivePathname === "/portfolio"}
             iconName="profile"
@@ -134,6 +141,7 @@ const AppNavigation = ({ children }: { children: ReactNode }) => {
             }}
           />
           <NavigationRail.Menu
+            color={color}
             title="analytics"
             isActive={isActivePathname === "/analytics"}
             iconName="bar_chart"
@@ -143,6 +151,7 @@ const AppNavigation = ({ children }: { children: ReactNode }) => {
             }}
           />
           <NavigationRail.ExpantionMenu
+            color={color}
             title="Setting"
             isActive={isActivePathname.indexOf("/settings") !== -1}
             iconName="setting"
@@ -152,6 +161,7 @@ const AppNavigation = ({ children }: { children: ReactNode }) => {
             }}
             expantionList={[
               <NavigationRail.ExpantionMenuItem
+                color={color}
                 isActive={isActivePathname === "/settings/user"}
                 title="user setting"
                 onClick={() => {
@@ -160,6 +170,7 @@ const AppNavigation = ({ children }: { children: ReactNode }) => {
                 }}
               />,
               <NavigationRail.ExpantionMenuItem
+                color={color}
                 isActive={false}
                 title="logout"
               />,
