@@ -6,6 +6,7 @@ import {
   Flex,
   OptionType,
   Select,
+  Table,
   Typography,
 } from "ingred-ui";
 import "./_datepicker.css";
@@ -101,41 +102,50 @@ export const Form = ({ result, node }: { result?: any; node: ASTNode }) => {
     };
 
     return (
-      <Flex>
-        <Typography>data</Typography>
-        <form>
-          <Typography>domain</Typography>
-          <Select
-            name={"domain"}
-            options={domainOptions}
-            onChange={(newValue) => {
-              // なぜか型安全にならない
-              // @ts-ignore
-              onChange("domain", newValue ? newValue.value : undefined);
-            }}
-          />
-
-          <Typography>path</Typography>
-          <Select
-            name={"path"}
-            placeholder={"pathを入力してください"}
-            options={getPathOptions()}
-            onChange={(newValue) => {
-              // なぜか型安全にならない
-              // @ts-ignore
-              onChange("path", newValue ? newValue.value : undefined);
-            }}
-          />
-
-          <Typography>date</Typography>
-          <div style={{ height: "400px", width: "100%" }}>
-            <DateRangePicker
-              startDate={startDate}
-              endDate={endDate}
-              onDatesChange={handleChangeDates}
-            />
-          </div>
-        </form>
+      <Flex style={{ paddingTop: "50px" }}>
+        <Table>
+          <Table.Body>
+            <Table.Row>
+              <Table.HeaderCell width="100px">domain</Table.HeaderCell>
+              <Table.Cell>
+                <Select
+                  name={"domain"}
+                  options={domainOptions}
+                  onChange={(newValue) => {
+                    // なぜか型安全にならない
+                    // @ts-ignore
+                    onChange("domain", newValue ? newValue.value : undefined);
+                  }}
+                />
+              </Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.HeaderCell width="100px">path</Table.HeaderCell>
+              <Table.Cell>
+                <Select
+                  name={"path"}
+                  placeholder={"pathを入力してください"}
+                  options={getPathOptions()}
+                  onChange={(newValue) => {
+                    // なぜか型安全にならない
+                    // @ts-ignore
+                    onChange("path", newValue ? newValue.value : undefined);
+                  }}
+                />
+              </Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.HeaderCell width="100px">date</Table.HeaderCell>
+              <Table.Cell>
+                <DateRangePicker
+                  startDate={startDate}
+                  endDate={endDate}
+                  onDatesChange={handleChangeDates}
+                />
+              </Table.Cell>
+            </Table.Row>
+          </Table.Body>
+        </Table>
       </Flex>
     );
   }

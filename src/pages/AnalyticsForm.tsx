@@ -3,9 +3,8 @@ import { useQuery } from "urql";
 import { DocumentNode, parse, print } from "graphql";
 import { Result } from "../components/Result";
 import { Form } from "../components/Form";
-import { Paginator } from "../components/Paginator";
 import { TransformerContextProvider } from "../context/context";
-import { Flex, Typography } from "ingred-ui";
+import { Flex, Spinner, Typography } from "ingred-ui";
 import styled from "styled-components";
 
 const initialQuery = `
@@ -42,7 +41,9 @@ export const AnalyticsForm = () => {
   // 最初だけローディング表示する、2回目以降は form がリセットされてしまうのでやらない
   if (query === initialQuery) {
     return result.fetching ? (
-      <Typography>loading...</Typography>
+      <Flex style={{ width: "fit-content", margin: "auto", padding: "40px" }}>
+        <Spinner />
+      </Flex>
     ) : (
       <TransformerContextProvider
         root={ast}
@@ -52,13 +53,12 @@ export const AnalyticsForm = () => {
         }}
       >
         <Flex display="flex">
-          <Container>
+          <FormContainer>
             <Form result={result} node={ast} />
-          </Container>
-          <Container>
+          </FormContainer>
+          <TableContainer>
             <Result result={result} ast={ast} />
-            <Paginator result={result} />
-          </Container>
+          </TableContainer>
         </Flex>
       </TransformerContextProvider>
     );
@@ -74,20 +74,24 @@ export const AnalyticsForm = () => {
         }}
       >
         <Flex display="flex">
-          <Container>
+          <FormContainer>
             <Form result={result} node={ast} />
-          </Container>
-          <Container>
+          </FormContainer>
+          <TableContainer>
             <Result result={result} ast={ast} />
-            <Paginator result={result} />
-          </Container>
+          </TableContainer>
         </Flex>
       </TransformerContextProvider>
     </>
   );
 };
 
-const Container = styled.div`
-  margin: 0 2%;
-  width: 46%;
+const FormContainer = styled.div`
+  margin: 0 1%;
+  width: 38%;
+`;
+
+const TableContainer = styled.div`
+  margin: 0 1%;
+  width: 58%;
 `;

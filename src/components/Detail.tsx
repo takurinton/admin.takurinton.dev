@@ -45,8 +45,8 @@ export const Detail = ({
     labels: getDate(result.data.analytics_by_path_for_blog.date_count),
     datasets: [
       {
-        backgroundColor: "#ff7f7f",
-        borderColor: "#ff7f7f",
+        backgroundColor: "#ff69b4",
+        borderColor: "#ff69b4",
         data: getCount(result.data.analytics_by_path_for_blog.date_count),
         label: "閲覧数",
       },

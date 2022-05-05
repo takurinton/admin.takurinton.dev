@@ -1,6 +1,7 @@
 import { DocumentNode } from "graphql";
 import { ActionButton, DataTable, Flex, Typography, useTheme } from "ingred-ui";
 import { Link } from "react-router-dom";
+import { Paginator } from "./Paginator";
 
 export const Result = ({
   result,
@@ -30,7 +31,7 @@ export const Result = ({
         selector: (data: any) => (
           <ActionButton icon="link">
             <Link
-              to={`/detail/?domain=${data.domain}&path=${data.path}`}
+              to={`/analytics/detail/?domain=${data.domain}&path=${data.path}`}
               style={{
                 color: theme.palette.primary.main,
                 textDecoration: "none",
@@ -46,13 +47,13 @@ export const Result = ({
 
   return (
     <Flex>
-      <Typography component="h2">result</Typography>
       <Flex>
         <Typography align="right">
           count: {result.data.analytics.count}
         </Typography>
       </Flex>
       <DataTable {...args} />
+      <Paginator result={result} />
     </Flex>
   );
 };

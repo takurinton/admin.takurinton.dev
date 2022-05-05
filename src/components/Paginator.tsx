@@ -1,4 +1,5 @@
 import { Flex, Pager } from "ingred-ui";
+import styled from "styled-components";
 import { useTransformerContext } from "../context/context";
 
 export const Paginator = ({ result }: { result: any }) => {
@@ -11,15 +12,21 @@ export const Paginator = ({ result }: { result: any }) => {
   };
 
   return (
-    <Flex>
+    <PaginatorContainer>
       <Pager
         per={30}
         total={analytics.count}
-        index={analytics.current}
+        index={analytics.pages.current}
         onClick={(index) => {
           onClick(index);
         }}
       />
-    </Flex>
+    </PaginatorContainer>
   );
 };
+
+const PaginatorContainer = styled.div`
+  padding: ${({ theme }) => theme.spacing * 3}px;
+  width: fit-content;
+  margin: auto;
+`;
