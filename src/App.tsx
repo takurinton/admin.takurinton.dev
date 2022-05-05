@@ -224,6 +224,9 @@ const AppNavigation = ({
                 ]}
               />
             </NavigationRail.Content>
+            <NavigationRail.Footer>
+              <NavigationRail.Fixture />
+            </NavigationRail.Footer>
           </NavigationRail>
           <NavigationRail.MainContent>{children}</NavigationRail.MainContent>
         </NavigationRail.Container>
