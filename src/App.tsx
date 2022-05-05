@@ -12,6 +12,7 @@ import {
   createTheme,
   Flex,
   NavigationRail,
+  Spinner,
   ThemeProvider,
   Typography,
   useTheme,
@@ -31,7 +32,7 @@ const client = createClient({
 });
 
 export const App = () => {
-  const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
+  const { isAuthenticated, loginWithRedirect, logout, isLoading } = useAuth0();
   const theme = createTheme({
     palette: {
       primary: {
@@ -48,13 +49,25 @@ export const App = () => {
         {/* <Toast.Provider placement="top-center"> */}
         <Main>
           <Router>
-            <AppNavigation
-              logout={logout}
-              isAuthenticated={isAuthenticated}
-              loginWithRedirect={loginWithRedirect}
-            >
-              <AppRoute />
-            </AppNavigation>
+            {isLoading ? (
+              <Flex
+                style={{
+                  width: "fit-content",
+                  margin: "auto",
+                  padding: "40px",
+                }}
+              >
+                <Spinner />
+              </Flex>
+            ) : (
+              <AppNavigation
+                logout={logout}
+                isAuthenticated={isAuthenticated}
+                loginWithRedirect={loginWithRedirect}
+              >
+                <AppRoute />
+              </AppNavigation>
+            )}
           </Router>
         </Main>
         {/* </Toast.Provider> */}
