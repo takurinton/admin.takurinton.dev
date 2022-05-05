@@ -11,6 +11,7 @@ import {
   Button,
   createTheme,
   Flex,
+  Icon,
   NavigationRail,
   Spinner,
   ThemeProvider,
@@ -32,7 +33,9 @@ const client = createClient({
 });
 
 export const App = () => {
-  const { isAuthenticated, loginWithRedirect, logout, isLoading } = useAuth0();
+  const { isAuthenticated, loginWithRedirect, logout, isLoading, user } =
+    useAuth0();
+
   const theme = createTheme({
     palette: {
       primary: {
@@ -41,8 +44,23 @@ export const App = () => {
         main: "#ff69b4",
         dark: "#da69b4",
       },
+      icon: {
+        active: "#ff69b4",
+      },
+      background: {
+        hint: "#fff4ff",
+      },
+      text: {
+        primary: "#ff69b4",
+      },
     },
   });
+
+  // const accessToken = getAccessTokenWithPopup({
+  //   audience: REACT_APP_AUTH0_AUTHORIZER_IDENTIFIER,
+  //   scope: 'read:current_user',
+  // });
+
   return (
     <ThemeProvider theme={theme}>
       <Provider value={client}>
@@ -155,7 +173,7 @@ const AppNavigation = ({
           <NavigationRail>
             <NavigationRail.Content>
               <NavigationRail.Menu
-                color={color}
+                color={"fill"}
                 title="home"
                 isActive={isActivePathname === "/"}
                 iconName="dashboard"
@@ -185,7 +203,7 @@ const AppNavigation = ({
                 }}
               />
               <NavigationRail.Menu
-                color={color}
+                color={"fill"}
                 title="analytics"
                 isActive={isActivePathname === "/analytics"}
                 iconName="bar_chart"
@@ -199,10 +217,10 @@ const AppNavigation = ({
                 title="Setting"
                 isActive={isActivePathname.indexOf("/settings") !== -1}
                 iconName="setting"
-                onClick={() => {
-                  setIsActivePathname("/settings");
-                  history.push("/settings");
-                }}
+                // onClick={() => {
+                //   setIsActivePathname("/settings");
+                //   history.push("/settings");
+                // }}
                 expantionList={[
                   <NavigationRail.ExpantionMenuItem
                     color={color}
