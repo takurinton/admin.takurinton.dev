@@ -135,6 +135,8 @@ const AppNavigation = ({
     }
   }, [history.location.pathname]);
 
+  console.log("isAuthenticated", isAuthenticated);
+
   return (
     <>
       {isAuthenticated ? (
