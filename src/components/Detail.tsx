@@ -1,4 +1,4 @@
-import { Bar } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 import { DocumentNode } from "graphql";
 import { ACenter } from "../components/text";
 import { useTransformerContext } from "../context/context";
@@ -27,7 +27,7 @@ export const Detail = ({
   path: string;
 }) => {
   const { handleChange, state } = useForm();
-  const [startDate, setStartDate] = useState(moment().set("date", 1));
+  const [startDate, setStartDate] = useState(moment("2021-08-27"));
   const [endDate, setEndDate] = useState(moment());
 
   const api = useTransformerContext();
@@ -95,7 +95,7 @@ export const Detail = ({
       </Flex>
       <Flex>
         <Typography>グラフ</Typography>
-        <Bar data={data} />
+        <Line data={data} />
       </Flex>
     </Flex>
   );

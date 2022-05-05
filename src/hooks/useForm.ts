@@ -1,4 +1,3 @@
-import { OptionType } from "ingred-ui";
 import { useState } from "react";
 
 export const useForm = () => {

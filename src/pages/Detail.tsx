@@ -7,6 +7,10 @@ import {
   PORTFOLIO_NUMBER,
   BLOG_NUMBER,
   ALL_NUMBER,
+  PORTFOLIO_DEV,
+  PORTFOLIO_DEV_NUMBER,
+  BLOG_DEV,
+  BLOG_DEV_NUMBER,
 } from "../utils/constants";
 import { getParams } from "../utils/getParams";
 import { TransformerContextProvider } from "../context/context";
@@ -30,12 +34,24 @@ const initialQuery = (domain: number, path: string) => `
 
 export const DetailForm = () => {
   const domainString = getParams("domain");
-  const domain =
-    domainString === PORTFOLIO
-      ? PORTFOLIO_NUMBER
-      : domainString === BLOG
-      ? BLOG_NUMBER
-      : ALL_NUMBER;
+  let domain;
+  switch (domainString) {
+    case PORTFOLIO:
+      domain = PORTFOLIO_NUMBER;
+      break;
+    case BLOG:
+      domain = BLOG_NUMBER;
+      break;
+    case PORTFOLIO_DEV:
+      domain = PORTFOLIO_DEV_NUMBER;
+      break;
+    case BLOG_DEV:
+      domain = BLOG_DEV_NUMBER;
+      break;
+    default:
+      domain = ALL_NUMBER;
+      break;
+  }
   const path = getParams("path") ?? "";
   const [query, setQuery] = useState<string>(initialQuery(domain, path));
   const [ast, setAst] = useState<DocumentNode>(

@@ -50,8 +50,7 @@ export const Form = ({ result, node }: { result?: any; node: ASTNode }) => {
   if (node.kind === "Field") {
     const api = useTransformerContext();
     const { handleChange, state } = useForm();
-    // custom hooks で管理したいけど、moment 形式ではないので別で管理する
-    const [startDate, setStartDate] = useState(moment().set("date", 1));
+    const [startDate, setStartDate] = useState(moment("2021-08-27"));
     const [endDate, setEndDate] = useState(moment());
 
     const onChange = (name: string, newValue: string | undefined): void => {

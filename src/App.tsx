@@ -4,9 +4,10 @@ import { AnalyticsForm } from "./pages/AnalyticsForm";
 import { DetailForm } from "./pages/Detail";
 import { createTheme, Flex, ThemeProvider, Typography } from "ingred-ui";
 
+const localUrl = "http://localhost:3001/graphql";
 const url = "https://api-takurinton-dev.onrender.com/graphql";
 const client = createClient({
-  url,
+  url: localUrl,
 });
 
 export const App = () => {
