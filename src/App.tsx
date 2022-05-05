@@ -148,8 +148,6 @@ const AppNavigation = ({
     }
   }, [history.location.pathname]);
 
-  console.log("isAuthenticated", isAuthenticated);
-
   return (
     <>
       {isAuthenticated ? (
@@ -239,15 +237,6 @@ const AppNavigation = ({
                 isActive={true}
                 iconName="logout"
                 onClick={loginWithRedirect}
-              />
-              <NavigationRail.Menu
-                color={color}
-                title="logout..."
-                isActive={true}
-                iconName="logout"
-                onClick={() => {
-                  logout({ returnTo: window.location.origin });
-                }}
               />
             </NavigationRail.Content>
           </NavigationRail>
