@@ -15,7 +15,7 @@ import styled from "styled-components";
 import { useAuth0 } from "@auth0/auth0-react";
 import { AppNavigation } from "./components/NavigationRail";
 import { AppRoute } from "./route/AppRoute";
-import { useMemo } from "react";
+import { useMemo, ReactNode } from "react";
 import { authExchange } from "@urql/exchange-auth";
 
 const Main = styled.main`
@@ -25,37 +25,16 @@ const Main = styled.main`
   height: 100%;
 `;
 
-export const App = () => {
+const UrqlProvider = ({
+  user,
+  getAccessTokenSilently,
+  children,
+}: {
+  user: any;
+  getAccessTokenSilently: any;
+  children: ReactNode;
+}) => {
   const { addToast } = Toast.useToasts();
-  const {
-    isAuthenticated,
-    loginWithRedirect,
-    logout,
-    isLoading,
-    getAccessTokenSilently,
-    user,
-  } = useAuth0();
-
-  const theme = createTheme({
-    palette: {
-      primary: {
-        highlight: "#F2F9FC",
-        light: "#ffbae0",
-        main: "#ff69b4",
-        dark: "#da69b4",
-      },
-      icon: {
-        active: "#ff69b4",
-      },
-      background: {
-        hint: "#fff4ff",
-      },
-      text: {
-        primary: "#ff69b4",
-      },
-    },
-  });
-
   const localUrl = "http://localhost:3001/graphql";
   const url = "https://api-takurinton-dev.onrender.com/graphql";
   const client = useMemo(() => {
@@ -133,21 +112,20 @@ export const App = () => {
         errorExchange({
           onError: async (error) => {
             if (error.response?.status === 401) {
-              logout();
-              await loginWithRedirect();
-              return;
+              // noop
+              // 下で拾ってくれる
             }
             if (error.graphQLErrors && error.graphQLErrors.length > 0) {
               for (const graphQLError of error.graphQLErrors) {
                 addToast(graphQLError.message, {
                   appearance: "error",
-                  autoDismiss: false,
+                  autoDismiss: true,
                 });
               }
             } else {
               addToast(error.message, {
                 appearance: "error",
-                autoDismiss: false,
+                autoDismiss: true,
               });
             }
           },
@@ -157,10 +135,50 @@ export const App = () => {
     });
   }, [user]);
 
+  return <Provider value={client}>{children}</Provider>;
+};
+
+export const App = () => {
+  const {
+    isAuthenticated,
+    loginWithRedirect,
+    logout,
+    isLoading,
+    getAccessTokenSilently,
+    user,
+  } = useAuth0();
+
+  const theme = createTheme({
+    palette: {
+      primary: {
+        highlight: "#F2F9FC",
+        light: "#ffbae0",
+        main: "#ff69b4",
+        dark: "#da69b4",
+      },
+      icon: {
+        active: "#ff69b4",
+      },
+      background: {
+        hint: "#fff4ff",
+      },
+      text: {
+        primary: "#ff69b4",
+      },
+    },
+  });
+
   return (
     <ThemeProvider theme={theme}>
-      <Provider value={client}>
-        <Toast.Provider placement="top-center">
+      <Toast.Provider
+        placement="top-center"
+        autoDismissTimeout={3000}
+        transitionDuration={300}
+      >
+        <UrqlProvider
+          user={user}
+          getAccessTokenSilently={getAccessTokenSilently}
+        >
           <Main>
             <Router>
               {isLoading ? (
@@ -184,8 +202,8 @@ export const App = () => {
               )}
             </Router>
           </Main>
-        </Toast.Provider>
-      </Provider>
+        </UrqlProvider>
+      </Toast.Provider>
     </ThemeProvider>
   );
 };

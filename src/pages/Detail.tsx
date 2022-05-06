@@ -62,6 +62,10 @@ export const DetailForm = () => {
     query,
   });
 
+  if (result.error) {
+    return <></>;
+  }
+
   if (query === initialQuery(domain, path)) {
     return result.fetching ? (
       <Flex style={{ width: "fit-content", margin: "auto", padding: "40px" }}>

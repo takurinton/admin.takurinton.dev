@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "urql";
 import { DocumentNode, parse, print } from "graphql";
 import { Result } from "../components/Result";
 import { Form } from "../components/Form";
 import { TransformerContextProvider } from "../context/context";
-import { Flex, Spinner, Typography } from "ingred-ui";
+import { Button, Flex, Spinner, Typography } from "ingred-ui";
 import styled from "styled-components";
+import { Toast } from "ingred-ui";
 
 const initialQuery = `
 query getAnalytics {
@@ -37,6 +38,16 @@ export const AnalyticsForm = () => {
   const [result] = useQuery({
     query: query,
   });
+
+  if (result.error) {
+    return (
+      <div style={{ width: "200px" }}>
+        <Button onClick={() => console.log("TODO: login button")}>
+          ログインし直す
+        </Button>
+      </div>
+    );
+  }
 
   // 最初だけローディング表示する、2回目以降は form がリセットされてしまうのでやらない
   if (query === initialQuery) {
