@@ -27,7 +27,7 @@ export const UrqlProvider = ({
   const url = "https://api-takurinton-dev.onrender.com/graphql";
   const client = useMemo(() => {
     return createClient({
-      url: localUrl,
+      url,
       exchanges: [
         dedupExchange,
         cacheExchange,
