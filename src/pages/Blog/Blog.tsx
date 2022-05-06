@@ -50,16 +50,22 @@ export const Blog = () => {
         name: "is_open",
         selector: (data: any) =>
           data.open ? (
-            <Badge color="success">公開中</Badge>
+            <Badge color="success" fontSize="12px">
+              公開中
+            </Badge>
           ) : (
-            <Badge color="danger">非公開</Badge>
+            <Badge color="danger" fontSize="12px">
+              非公開
+            </Badge>
           ),
       },
       {
         name: "category",
         selector: (data: any) => (
           <Link to={`/blog/?category=${data.category}`}>
-            <Badge color="primary">{data.category}</Badge>
+            <Badge color="primary" fontSize="12px">
+              {data.category}
+            </Badge>
           </Link>
         ),
       },

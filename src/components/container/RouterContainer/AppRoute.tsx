@@ -4,6 +4,7 @@ import { Route } from "react-router-dom";
 import { Analytics } from "../../../pages/Analytics/Analytics";
 import { AnalyticsDetail } from "../../../pages/AnalyticsDetail/AnalyticsDetail";
 import { Blog } from "../../../pages/Blog/Blog";
+import { BlogEdit } from "../../../pages/BlogEdit/BlogEdit";
 
 const routes = [
   {
@@ -15,6 +16,11 @@ const routes = [
     text: "ブログ管理画面",
     component: <Blog />,
     path: "/blog",
+  },
+  {
+    text: "記事の編集",
+    component: <BlogEdit />,
+    path: "/blog/edit/:id",
   },
   {
     text: "ポートフォリオ管理画面",
