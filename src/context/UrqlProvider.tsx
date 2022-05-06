@@ -23,8 +23,9 @@ export const UrqlProvider = ({
   children: ReactNode;
 }) => {
   const { addToast } = Toast.useToasts();
-  const localUrl = "http://localhost:3001/graphql";
-  const url = "https://api-takurinton-dev.onrender.com/graphql";
+  const url = import.meta.env.PROD
+    ? "https://api-takurinton-dev.onrender.com/graphql"
+    : "http://localhost:3001/graphql";
   const client = useMemo(() => {
     return createClient({
       url,
