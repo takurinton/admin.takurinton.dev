@@ -1,8 +1,8 @@
 import { Fragment, ReactNode } from "react";
 import { Typography } from "ingred-ui";
 import { Route } from "react-router-dom";
-import { AnalyticsForm } from "../pages/AnalyticsForm";
-import { DetailForm } from "../pages/Detail";
+import { AnalyticsForm } from "../../../pages/AnalyticsForm";
+import { DetailForm } from "../../../pages/Detail";
 
 const routes = [
   {
