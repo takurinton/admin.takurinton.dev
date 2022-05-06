@@ -51,8 +51,10 @@ export const Form = ({ result, node }: { result?: any; node: ASTNode }) => {
   if (node.kind === "Field") {
     const api = useTransformerContext();
     const { handleChange, state } = useForm();
-    const [startDate, setStartDate] = useState(moment("2021-08-27"));
-    const [endDate, setEndDate] = useState(moment());
+    const [startDate, setStartDate] = useState<moment.Moment | null>(
+      moment("2021-08-27")
+    );
+    const [endDate, setEndDate] = useState<moment.Moment | null>(moment());
 
     const onChange = (name: string, newValue: string | undefined): void => {
       handleChange(name, newValue);
@@ -82,8 +84,8 @@ export const Form = ({ result, node }: { result?: any; node: ASTNode }) => {
       startDate,
       endDate,
     }: {
-      startDate: moment.Moment;
-      endDate: moment.Moment;
+      startDate: moment.Moment | null;
+      endDate: moment.Moment | null;
     }) => {
       setStartDate(startDate);
       setEndDate(endDate);

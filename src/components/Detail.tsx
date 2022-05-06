@@ -28,8 +28,10 @@ export const Detail = ({
   path: string;
 }) => {
   const { handleChange, state } = useForm();
-  const [startDate, setStartDate] = useState(moment("2021-08-27"));
-  const [endDate, setEndDate] = useState(moment());
+  const [startDate, setStartDate] = useState<moment.Moment | null>(
+    moment("2021-08-27")
+  );
+  const [endDate, setEndDate] = useState<moment.Moment | null>(moment());
 
   const api = useTransformerContext();
 
@@ -58,8 +60,8 @@ export const Detail = ({
     startDate,
     endDate,
   }: {
-    startDate: moment.Moment;
-    endDate: moment.Moment;
+    startDate: moment.Moment | null;
+    endDate: moment.Moment | null;
   }) => {
     setStartDate(startDate);
     setEndDate(endDate);
