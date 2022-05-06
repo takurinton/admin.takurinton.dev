@@ -1,6 +1,6 @@
 import { LogoutOptions, RedirectLoginOptions } from "@auth0/auth0-react";
 import { Flex, Spinner } from "ingred-ui";
-import { BrowserRouter, Router } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import styled from "styled-components";
 import { AppRoute } from "./AppRoute";
 import { AppNavigation } from "./NavigationRail";

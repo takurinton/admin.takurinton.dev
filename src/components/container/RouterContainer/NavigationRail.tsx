@@ -3,7 +3,6 @@ import { RedirectLoginOptions } from "@auth0/auth0-spa-js";
 import { Button, NavigationRail, Typography, useTheme } from "ingred-ui";
 import { ReactNode, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import styled from "styled-components";
 
 export const AppNavigation = ({
   children,

@@ -1,12 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "urql";
 import { DocumentNode, parse, print } from "graphql";
-import { Result } from "../components/Result";
-import { Form } from "../components/Form";
-import { TransformerContextProvider } from "../context/context";
+import { AnalyticsTable } from "./internal/AnalyticsTable";
+import { AnalyticsForm } from "./internal/AnalyticsForm";
+import { TransformerContextProvider } from "../../context/context";
 import { Button, Flex, Spinner, Typography } from "ingred-ui";
 import styled from "styled-components";
-import { Toast } from "ingred-ui";
 
 const initialQuery = `
 query getAnalytics {
@@ -31,7 +30,7 @@ query getAnalytics {
   }
 }`;
 
-export const AnalyticsForm = () => {
+export const Analytics = () => {
   const [query, setQuery] = useState(initialQuery);
   const [ast, setAst] = useState<DocumentNode>(parse(initialQuery));
 
@@ -65,10 +64,10 @@ export const AnalyticsForm = () => {
       >
         <Flex display="flex">
           <FormContainer>
-            <Form result={result} node={ast} />
+            <AnalyticsForm result={result} node={ast} />
           </FormContainer>
           <TableContainer>
-            <Result result={result} ast={ast} />
+            <AnalyticsTable result={result} ast={ast} />
           </TableContainer>
         </Flex>
       </TransformerContextProvider>
@@ -86,10 +85,10 @@ export const AnalyticsForm = () => {
       >
         <Flex display="flex">
           <FormContainer>
-            <Form result={result} node={ast} />
+            <AnalyticsForm result={result} node={ast} />
           </FormContainer>
           <TableContainer>
-            <Result result={result} ast={ast} />
+            <AnalyticsTable result={result} ast={ast} />
           </TableContainer>
         </Flex>
       </TransformerContextProvider>

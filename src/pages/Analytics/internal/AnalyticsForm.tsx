@@ -1,26 +1,25 @@
 import { ASTNode } from "graphql";
-import { useForm } from "../hooks/useForm";
-import { useTransformerContext } from "../context/context";
-import {
-  DateRangePicker,
-  Flex,
-  OptionType,
-  Select,
-  Table,
-  Typography,
-} from "ingred-ui";
-import "./_datepicker.css";
+import { useForm } from "../../../hooks/useForm";
+import { useTransformerContext } from "../../../context/context";
+import { DateRangePicker, Flex, Select, Table } from "ingred-ui";
+import "../../../style/_datepicker.css";
 import moment from "moment";
 import { useState } from "react";
 
-export const Form = ({ result, node }: { result?: any; node: ASTNode }) => {
+export const AnalyticsForm = ({
+  result,
+  node,
+}: {
+  result?: any;
+  node: ASTNode;
+}) => {
   const pathList = result.data.analytics.path_list;
 
   if (node.kind === "Document") {
     return (
       <Flex>
         {node.definitions.map((def, index) => {
-          return <Form key={index} node={def} result={result} />;
+          return <AnalyticsForm key={index} node={def} result={result} />;
         })}
       </Flex>
     );
@@ -29,7 +28,7 @@ export const Form = ({ result, node }: { result?: any; node: ASTNode }) => {
   if (node.kind === "OperationDefinition") {
     return (
       <Flex>
-        <Form
+        <AnalyticsForm
           key={"operation_definition"}
           node={node.selectionSet}
           result={result}
@@ -42,7 +41,7 @@ export const Form = ({ result, node }: { result?: any; node: ASTNode }) => {
     return (
       <Flex>
         {node.selections.map((def, index) => {
-          return <Form key={index} node={def} result={result} />;
+          return <AnalyticsForm key={index} node={def} result={result} />;
         })}
       </Flex>
     );

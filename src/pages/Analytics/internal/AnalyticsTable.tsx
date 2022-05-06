@@ -3,7 +3,7 @@ import { ActionButton, DataTable, Flex, Typography, useTheme } from "ingred-ui";
 import { Link } from "react-router-dom";
 import { Paginator } from "./Paginator";
 
-export const Result = ({
+export const AnalyticsTable = ({
   result,
   ast,
 }: {

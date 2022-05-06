@@ -1,8 +1,8 @@
 import { Fragment, ReactNode } from "react";
 import { Typography } from "ingred-ui";
 import { Route } from "react-router-dom";
-import { AnalyticsForm } from "../../../pages/AnalyticsForm";
-import { DetailForm } from "../../../pages/Detail";
+import { Analytics } from "../../../pages/Analytics/Analytics";
+import { AnalyticsDetail } from "../../../pages/AnalyticsDetail/AnalyticsDetail";
 
 const routes = [
   {
@@ -22,12 +22,12 @@ const routes = [
   },
   {
     text: "analytics 管理画面",
-    component: <AnalyticsForm />,
+    component: <Analytics />,
     path: "/analytics",
   },
   {
     text: "analytics 詳細画面",
-    component: <DetailForm />,
+    component: <AnalyticsDetail />,
     path: "/analytics/detail",
   },
   {

@@ -1,6 +1,6 @@
-import { Flex, Pager } from "ingred-ui";
+import { Pager } from "ingred-ui";
 import styled from "styled-components";
-import { useTransformerContext } from "../context/context";
+import { useTransformerContext } from "../../../context/context";
 
 export const Paginator = ({ result }: { result: any }) => {
   const api = useTransformerContext();

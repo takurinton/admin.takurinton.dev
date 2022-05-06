@@ -1,9 +1,8 @@
 import { Line } from "react-chartjs-2";
 import { DocumentNode } from "graphql";
-import { ACenter } from "../components/text";
-import { useTransformerContext } from "../context/context";
-import { useForm } from "../hooks/useForm";
-import { DateRangePicker, Flex, Select, Table, Typography } from "ingred-ui";
+import { useTransformerContext } from "../../../context/context";
+import { useForm } from "../../../hooks/useForm";
+import { DateRangePicker, Flex, Table } from "ingred-ui";
 import { useState } from "react";
 import moment from "moment";
 import styled from "styled-components";
@@ -27,7 +26,7 @@ export const Detail = ({
   domainString: string | null;
   path: string;
 }) => {
-  const { handleChange, state } = useForm();
+  const { handleChange } = useForm();
   const [startDate, setStartDate] = useState<moment.Moment | null>(
     moment("2021-08-27")
   );

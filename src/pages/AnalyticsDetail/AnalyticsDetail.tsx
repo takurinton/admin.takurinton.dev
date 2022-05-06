@@ -11,11 +11,11 @@ import {
   PORTFOLIO_DEV_NUMBER,
   BLOG_DEV,
   BLOG_DEV_NUMBER,
-} from "../utils/constants";
-import { getParams } from "../utils/getParams";
-import { TransformerContextProvider } from "../context/context";
-import { Detail } from "../components/Detail";
-import { Flex, Spinner, Typography } from "ingred-ui";
+} from "../../utils/constants";
+import { getParams } from "../../utils/getParams";
+import { TransformerContextProvider } from "../../context/context";
+import { Detail } from "./internal/Detail";
+import { Flex, Spinner } from "ingred-ui";
 
 const now = new Date();
 const today = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate() + 1}`;
@@ -32,7 +32,7 @@ const initialQuery = (domain: number, path: string) => `
 }
 `;
 
-export const DetailForm = () => {
+export const AnalyticsDetail = () => {
   const domainString = getParams("domain");
   let domain;
   switch (domainString) {
