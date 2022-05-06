@@ -3,6 +3,7 @@ import { Typography } from "ingred-ui";
 import { Route } from "react-router-dom";
 import { Analytics } from "../../../pages/Analytics/Analytics";
 import { AnalyticsDetail } from "../../../pages/AnalyticsDetail/AnalyticsDetail";
+import { Blog } from "../../../pages/Blog/Blog";
 
 const routes = [
   {
@@ -12,7 +13,7 @@ const routes = [
   },
   {
     text: "ブログ管理画面",
-    component: () => <></>,
+    component: <Blog />,
     path: "/blog",
   },
   {
