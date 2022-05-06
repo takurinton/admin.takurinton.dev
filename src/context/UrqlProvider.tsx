@@ -56,7 +56,7 @@ export const UrqlProvider = ({
                 ...fetchOptions,
                 headers: {
                   ...fetchOptions.headers,
-                  Authorization: authState.token,
+                  Authorization: `Bearer ${authState.token}`,
                 },
               },
             });
