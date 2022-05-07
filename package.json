@@ -8,11 +8,13 @@
   },
   "dependencies": {
     "@auth0/auth0-react": "^1.10.1",
+    "@types/marked": "^4.0.3",
     "@urql/exchange-auth": "^0.1.7",
     "chart.js": "^3.5.1",
     "framer-motion": "^4.1.17",
     "graphql": "^15.6.0",
     "ingred-ui": "^9.7.0",
+    "marked": "^4.0.15",
     "moment": "^2.29.3",
     "react": "^17.0.0",
     "react-chartjs-2": "^3.0.5",
