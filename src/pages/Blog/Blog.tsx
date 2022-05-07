@@ -94,6 +94,15 @@ export const Blog = () => {
                 type: "default",
               },
               {
+                text: "analytics を見る",
+                onClick: () => {
+                  history.push(
+                    `/analytics/detail/?domain=blog.takurinton.dev&path=/post/${data.id}`
+                  );
+                },
+                type: "default",
+              },
+              {
                 text: "削除",
                 onClick: () => {
                   console.log("onClick data.delete");
