@@ -10,7 +10,7 @@ import {
 } from "ingred-ui";
 import { marked } from "marked";
 import moment from "moment";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useCallback, useEffect } from "react";
 import styled from "styled-components";
 import { useMutation } from "urql";
 import { useForm } from "./hooks/useForm";
@@ -52,13 +52,39 @@ export const BlogEditForm = ({
     title,
     contents,
     open,
-    category,
+    category: categories.filter(({ name }) => category === name)[0].id,
     pub_date: moment(pub_date),
   });
 
   const getHight = (value: string) => {
     return `${value.split(" ").length}px`;
   };
+
+  const handleKeydown = useCallback((event) => {
+    if (event.key === "s" && event.metaKey) {
+      event.preventDefault();
+      handleSubmit(updatePost);
+    }
+  }, []);
+
+  const getValueFromCategoryString = useCallback(
+    (category: string) => {
+      return categories.filter(({ name }) => category === name)[0];
+    },
+    [state.category]
+  );
+
+  const getCategoryFromCategoryValue = useCallback(
+    (value: number) => {
+      return categories.filter(({ id }) => value === id)[0];
+    },
+    [state.category]
+  );
+
+  useEffect(() => {
+    addEventListener("keydown", handleKeydown);
+    return () => removeEventListener("keydown", handleKeydown);
+  });
 
   return (
     <EditorContainer>
@@ -105,18 +131,18 @@ export const BlogEditForm = ({
             // @ts-ignore
             defaultValue={{
               label: category,
-              value: categories.filter(({ name }) => category === name)[0],
+              value: getValueFromCategoryString(category).id,
             }}
             placeholder="カテゴリ選択"
             onChange={(newValue) => {
               // @ts-ignore
-              handleChange("category", newValue.label);
+              handleChange("category", newValue.value);
             }}
           />
         </EditColumnContainer>
         <EditColumnContainer>
           <Badge color="primary" fontSize="12px" fontWeight="700">
-            {state.category}
+            {getCategoryFromCategoryValue(state.category).name}
           </Badge>
         </EditColumnContainer>
       </ContentContainer>

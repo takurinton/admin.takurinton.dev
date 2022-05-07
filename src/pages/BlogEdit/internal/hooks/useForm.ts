@@ -22,22 +22,28 @@ export const useForm = (initialState: any) => {
         context?: Partial<OperationContext> | undefined
       ) => Promise<OperationResult<any, object>>
     ) => {
+      console.log(state);
       updatePost(state).then((result) => {
-        // レスポンスを見て分岐
         if (result.error) {
           addToast("保存に失敗しました", {
             appearance: "error",
             autoDismiss: true,
           });
         } else {
-          addToast("保存しました", {
-            appearance: "success",
-            autoDismiss: true,
-          });
-
-          setTimeout(() => {
-            history.push("/blog");
-          }, 3000);
+          if (state.open) {
+            addToast("保存しました", {
+              appearance: "success",
+              autoDismiss: true,
+            });
+            setTimeout(() => {
+              history.push("/blog");
+            }, 3000);
+          } else {
+            addToast("保存しました", {
+              appearance: "success",
+              autoDismiss: true,
+            });
+          }
         }
       });
     },

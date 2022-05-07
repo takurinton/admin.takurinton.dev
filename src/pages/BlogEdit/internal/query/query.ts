@@ -20,13 +20,13 @@ export const query = gql`
 export const updatePostMutation = gql`
   mutation updatePostMutation(
     $id: Int!
-    $title: String
-    $contents: String
-    $category: String
-    $pub_date: String
-    $open: Boolean
+    $title: String!
+    $contents: String!
+    $category: Int!
+    $pub_date: String!
+    $open: Boolean!
   ) {
-    getPost(
+    updatePost(
       id: $id
       title: $title
       contents: $contents
