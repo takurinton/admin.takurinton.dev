@@ -1,5 +1,13 @@
-import { Button, Flex, Input, ToggleButton, Typography } from "ingred-ui";
+import {
+  Button,
+  DatePicker,
+  Flex,
+  Input,
+  ToggleButton,
+  Typography,
+} from "ingred-ui";
 import { marked } from "marked";
+import moment from "moment";
 import { ChangeEvent } from "react";
 import styled from "styled-components";
 import { useForm } from "./hooks/useForm";
@@ -17,34 +25,6 @@ const EditColumnContainer = styled.div`
   width: 46%;
 `;
 
-// const TextAreaStyle = styled.div`
-//   &:focus {
-//     border: red;
-//   }
-// `;
-
-// const TextArea = ({
-//   contents,
-//   onChange,
-// }: {
-//   contents: string;
-//   onChange: (name: string, newValue: string) => void;
-// }) => {
-//   const ref = createRef<HTMLDivElement>();
-
-//   const handleKeydown = (event: KeyboardEvent) => {
-//     if (event.key === "a") {
-//       document.execCommand("delete");
-//     }
-//   };
-
-//   return (
-//     <TextAreaStyle ref={ref} contentEditable onKeyDown={handleKeydown}>
-//       {contents}
-//     </TextAreaStyle>
-//   );
-// };
-
 export const BlogEditForm = ({
   id,
   title,
@@ -56,18 +36,18 @@ export const BlogEditForm = ({
   title: string;
   contents: string;
   open: boolean;
-  pub_date: string;
+  pub_date: Date;
 }) => {
   const { handleChange, state } = useForm({
     id,
     title,
     contents,
-    pub_date,
     open,
+    pub_date: moment(pub_date),
   });
 
   const getHight = (value: string) => {
-    return `${value.split("\n").length}px`;
+    return `${value.split(" ").length}px`;
   };
 
   return (
@@ -100,7 +80,6 @@ export const BlogEditForm = ({
       </ContentContainer>
       <ContentContainer display="flex">
         <EditColumnContainer>
-          {/* <TextArea contents={state.contents} onChange={handleChange} /> */}
           <Input
             multiline
             width="100%"
@@ -117,10 +96,6 @@ export const BlogEditForm = ({
           {renderStringToHtml(
             marked.parse(state.contents, {
               renderer: markdownStyle(),
-              // syntax highlight は管理画面にはいらないでしょw
-              // highlight: (code, lang) => {
-              //   return highlightjs.highlightAuto(code, [lang]).value;
-              // },
             })
           )}
         </EditColumnContainer>
@@ -140,7 +115,20 @@ export const BlogEditForm = ({
           <Typography>{state.open ? "公開" : "非公開"}</Typography>
         </EditColumnContainer>
       </ContentContainer>
-      <Typography>{JSON.stringify(pub_date)}</Typography>
+      <ContentContainer display="flex">
+        <EditColumnContainer>
+          <DatePicker
+            date={state.pub_date}
+            onDateChange={(date) => {
+              console.log(date);
+              handleChange("pub_date", date);
+            }}
+          />
+        </EditColumnContainer>
+        <EditColumnContainer>
+          <Typography>{JSON.stringify(state.pub_date)}</Typography>
+        </EditColumnContainer>
+      </ContentContainer>
     </EditorContainer>
   );
 };
