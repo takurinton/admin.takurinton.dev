@@ -3,6 +3,9 @@ import { Typography } from "ingred-ui";
 import { Route } from "react-router-dom";
 import { Analytics } from "../../../pages/Analytics/Analytics";
 import { AnalyticsDetail } from "../../../pages/AnalyticsDetail/AnalyticsDetail";
+import { Blog } from "../../../pages/Blog/Blog";
+import { BlogEdit } from "../../../pages/BlogEdit/BlogEdit";
+import { BlogCreate } from "../../../pages/BlogCreate/BlogCreate";
 
 const routes = [
   {
@@ -12,8 +15,18 @@ const routes = [
   },
   {
     text: "ブログ管理画面",
-    component: () => <></>,
+    component: <Blog />,
     path: "/blog",
+  },
+  {
+    text: "記事の編集",
+    component: <BlogEdit />,
+    path: "/blog/edit/:id",
+  },
+  {
+    text: "記事の作成",
+    component: <BlogCreate />,
+    path: "/blog/create",
   },
   {
     text: "ポートフォリオ管理画面",
