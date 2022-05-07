@@ -46,19 +46,48 @@ export const AppNavigation = ({
                   history.push("/");
                 }}
               />
-              <NavigationRail.Menu
+              <NavigationRail.ExpantionMenu
                 color={color}
-                title="blog"
-                isActive={isActivePathname === "/blog"}
+                title="ブログ管理画面"
+                isActive={isActivePathname.indexOf("/blog") !== -1}
                 iconName="pencil"
-                onClick={() => {
-                  setIsActivePathname("/blog");
-                  history.push("/blog");
-                }}
+                // onClick={() => {
+                //   setIsActivePathname("/settings");
+                //   history.push("/settings");
+                // }}
+                expantionList={[
+                  <NavigationRail.ExpantionMenuItem
+                    color={color}
+                    title="投稿一覧"
+                    isActive={isActivePathname === "/blog"}
+                    onClick={() => {
+                      setIsActivePathname("/blog");
+                      history.push("/blog");
+                    }}
+                  />,
+                  <NavigationRail.ExpantionMenuItem
+                    color={color}
+                    title="投稿作成"
+                    isActive={isActivePathname === "/blog/create"}
+                    onClick={() => {
+                      setIsActivePathname("/blog/create");
+                      history.push("/blog/create");
+                    }}
+                  />,
+                  <NavigationRail.ExpantionMenuItem
+                    color={color}
+                    title="カテゴリ一覧"
+                    isActive={isActivePathname === "/blog/categories"}
+                    onClick={() => {
+                      setIsActivePathname("/blog/categories");
+                      history.push("/blog/categories");
+                    }}
+                  />,
+                ]}
               />
               <NavigationRail.Menu
                 color={color}
-                title="portfolio"
+                title="ポートフォリオ管理画面"
                 isActive={isActivePathname === "/portfolio"}
                 iconName="profile"
                 onClick={() => {
@@ -68,7 +97,7 @@ export const AppNavigation = ({
               />
               <NavigationRail.Menu
                 color={"fill"}
-                title="analytics"
+                title="アナリティクス"
                 isActive={isActivePathname === "/analytics"}
                 iconName="bar_chart"
                 onClick={() => {

@@ -1,4 +1,11 @@
-import { Badge, ContextMenu, DataTable, Flex, Spinner } from "ingred-ui";
+import {
+  Badge,
+  Button,
+  ContextMenu,
+  DataTable,
+  Flex,
+  Spinner,
+} from "ingred-ui";
 import { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import styled from "styled-components";
@@ -131,6 +138,15 @@ export const Blog = () => {
         </Flex>
       ) : (
         <Flex>
+          <Flex style={{ width: "150px", paddingBottom: "20px" }}>
+            <Button
+              onClick={() => {
+                history.push("/blog/create");
+              }}
+            >
+              新規作成
+            </Button>
+          </Flex>
           <DataTable {...args} />
         </Flex>
       )}
