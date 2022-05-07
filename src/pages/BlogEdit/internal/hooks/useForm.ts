@@ -4,7 +4,6 @@ export const useForm = (initialState: any) => {
   const [state, setState] = useState(initialState);
 
   const handleChange = useCallback((name: string, newValue: any) => {
-    console.log(name, ": ", newValue);
     setState({ ...state, [name]: newValue });
   }, []);
 

@@ -39,7 +39,7 @@ export const BlogEditForm = ({
   pub_date: Date;
 }) => {
   const { handleChange, state } = useForm({
-    id,
+    id: Number(id),
     title,
     contents,
     open,
