@@ -12,8 +12,10 @@ import { marked } from "marked";
 import moment from "moment";
 import { ChangeEvent } from "react";
 import styled from "styled-components";
+import { useMutation } from "urql";
 import { useForm } from "./hooks/useForm";
 import { markdownStyle } from "./markdownRenderer";
+import { updatePostMutation } from "./query/query";
 import { renderStringToHtml } from "./renderStringToJSX";
 
 const EditorContainer = styled.div``;
@@ -44,7 +46,8 @@ export const BlogEditForm = ({
   category: string;
   categories: { id: number; name: string }[];
 }) => {
-  const { handleChange, state } = useForm({
+  const [updatePostResult, updatePost] = useMutation(updatePostMutation);
+  const { handleSubmit, handleChange, state } = useForm({
     id: Number(id),
     title,
     contents,
@@ -63,7 +66,13 @@ export const BlogEditForm = ({
         <EditColumnContainer>{/* Empty */}</EditColumnContainer>
         <EditColumnContainer>
           <Flex style={{ width: "150px", margin: "0 0 0 auto" }}>
-            <Button>{state.open ? "保存" : "下書き保存"}</Button>
+            <Button
+              onClick={() => {
+                handleSubmit(updatePost);
+              }}
+            >
+              {state.open ? "保存" : "下書き保存"}
+            </Button>
           </Flex>
         </EditColumnContainer>
       </ContentContainer>
@@ -153,7 +162,6 @@ export const BlogEditForm = ({
           <DatePicker
             date={state.pub_date}
             onDateChange={(date) => {
-              console.log(date);
               handleChange("pub_date", date);
             }}
           />
