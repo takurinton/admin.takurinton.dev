@@ -9,6 +9,10 @@ export const query = gql`
       pub_date
       category
       open
+      categories {
+        id
+        name
+      }
     }
   }
 `;

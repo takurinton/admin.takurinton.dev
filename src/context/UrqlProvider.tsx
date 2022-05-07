@@ -1,4 +1,5 @@
 import { authExchange } from "@urql/exchange-auth";
+import { GraphQLError } from "graphql";
 import { Toast } from "ingred-ui";
 import { ReactNode, useMemo } from "react";
 import {
@@ -102,7 +103,6 @@ export const UrqlProvider = ({
           onError: async (error) => {
             if (error.response?.status === 401) {
               // noop
-              // 下で拾ってくれる
             }
             if (error.graphQLErrors && error.graphQLErrors.length > 0) {
               for (const graphQLError of error.graphQLErrors) {

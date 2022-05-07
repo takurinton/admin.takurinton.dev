@@ -1,8 +1,10 @@
 import {
+  Badge,
   Button,
   DatePicker,
   Flex,
   Input,
+  Select,
   ToggleButton,
   Typography,
 } from "ingred-ui";
@@ -31,18 +33,23 @@ export const BlogEditForm = ({
   contents,
   open,
   pub_date,
+  category,
+  categories,
 }: {
   id: number;
   title: string;
   contents: string;
   open: boolean;
   pub_date: Date;
+  category: string;
+  categories: { id: number; name: string }[];
 }) => {
   const { handleChange, state } = useForm({
     id: Number(id),
     title,
     contents,
     open,
+    category,
     pub_date: moment(pub_date),
   });
 
@@ -76,6 +83,32 @@ export const BlogEditForm = ({
           <Typography component="h1" size="xxxxl" weight="bold">
             {state.title}
           </Typography>
+        </EditColumnContainer>
+      </ContentContainer>
+      <ContentContainer display="flex" style={{ alignItems: "center" }}>
+        <EditColumnContainer>
+          <Select
+            options={categories.map(({ id, name }) => ({
+              value: id,
+              label: name,
+            }))}
+            minWidth="100%"
+            // @ts-ignore
+            defaultValue={{
+              label: category,
+              value: categories.filter(({ name }) => category === name)[0],
+            }}
+            placeholder="カテゴリ選択"
+            onChange={(newValue) => {
+              // @ts-ignore
+              handleChange("category", newValue.label);
+            }}
+          />
+        </EditColumnContainer>
+        <EditColumnContainer>
+          <Badge color="primary" fontSize="12px" fontWeight="700">
+            {state.category}
+          </Badge>
         </EditColumnContainer>
       </ContentContainer>
       <ContentContainer display="flex">

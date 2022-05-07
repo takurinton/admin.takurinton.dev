@@ -34,6 +34,8 @@ export const BlogEdit = () => {
           contents={results.data.getPost.contents}
           pub_date={results.data.getPost.pub_date}
           open={results.data.getPost.open}
+          category={results.data.getPost.category}
+          categories={results.data.getPost.categories}
         />
       )}
     </>
