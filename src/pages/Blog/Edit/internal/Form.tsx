@@ -13,9 +13,9 @@ import moment from "moment";
 import { ChangeEvent, useCallback, useEffect } from "react";
 import styled from "styled-components";
 import { useMutation } from "urql";
-import { useForm } from "./hooks/useForm";
+import { useForm } from "../internal/hooks/useForm";
 import { markdownStyle } from "./markdownRenderer";
-import { updatePostMutation } from "./query/query";
+import { updatePostMutation } from "../../internal/query";
 import { renderStringToHtml } from "./renderStringToJSX";
 
 const EditorContainer = styled.div``;

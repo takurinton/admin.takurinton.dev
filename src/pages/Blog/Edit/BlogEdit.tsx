@@ -1,15 +1,14 @@
-import { Flex, Spinner, Toast } from "ingred-ui";
-import { useEffect, useState } from "react";
+import { Flex, Spinner } from "ingred-ui";
 import { useParams } from "react-router-dom";
 import { useQuery } from "urql";
+import { getPostQuery } from "../internal/query";
 import { BlogEditForm } from "./internal/Form";
-import { query } from "./internal/query/query";
 
 export const BlogEdit = () => {
   // @ts-ignore
   const { id } = useParams();
   const [results] = useQuery({
-    query,
+    query: getPostQuery,
     variables: {
       id: Number(id),
     },

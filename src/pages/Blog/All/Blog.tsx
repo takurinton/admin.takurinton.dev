@@ -8,10 +8,9 @@ import {
 } from "ingred-ui";
 import { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import styled from "styled-components";
 import { useQuery } from "urql";
+import { getPostsQuery } from "../internal/query";
 import { useQueryParams } from "./internal/hooks/useQueryParams";
-import { query } from "./internal/query/query";
 
 const initialState = [
   { id: 0, title: "", contents: "", open: false, category: "", pub_date: "" },
@@ -25,7 +24,7 @@ export const Blog = () => {
   const [posts, setPosts] = useState(initialState);
 
   const [results] = useQuery({
-    query,
+    query: getPostsQuery,
   });
 
   useEffect(() => {

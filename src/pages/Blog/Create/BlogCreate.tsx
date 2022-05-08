@@ -1,9 +1,9 @@
 import { useQuery } from "urql";
+import { getCategoriesQuery } from "../internal/query";
 import { BlogCreateForm } from "./internal/Form";
-import { query } from "./internal/query/query";
 
 export const BlogCreate = () => {
-  const [results] = useQuery({ query });
+  const [results] = useQuery({ query: getCategoriesQuery });
 
   return (
     <>
