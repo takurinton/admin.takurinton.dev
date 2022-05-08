@@ -3,9 +3,9 @@ import { Typography } from "ingred-ui";
 import { Route } from "react-router-dom";
 import { Analytics } from "../../../pages/Analytics/Analytics";
 import { AnalyticsDetail } from "../../../pages/AnalyticsDetail/AnalyticsDetail";
-import { Blog } from "../../../pages/Blog/Blog";
-import { BlogEdit } from "../../../pages/BlogEdit/BlogEdit";
-import { BlogCreate } from "../../../pages/BlogCreate/BlogCreate";
+import { Blog } from "../../../pages/Blog/All/Blog";
+import { BlogEdit } from "../../../pages/Blog/Edit/BlogEdit";
+import { BlogCreate } from "../../../pages/Blog/Create/BlogCreate";
 
 const routes = [
   {

@@ -1,17 +1,18 @@
 import {
   Badge,
   Button,
+  ConfirmModal,
   ContextMenu,
   DataTable,
   Flex,
   Spinner,
+  Toast,
 } from "ingred-ui";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import styled from "styled-components";
-import { useQuery } from "urql";
+import { useMutation, useQuery } from "urql";
+import { getPostsQuery, removePostMutation } from "../internal/query";
 import { useQueryParams } from "./internal/hooks/useQueryParams";
-import { query } from "./internal/query/query";
 
 const initialState = [
   { id: 0, title: "", contents: "", open: false, category: "", pub_date: "" },
@@ -20,13 +21,20 @@ const initialState = [
 export const Blog = () => {
   const history = useHistory();
   const queryParams = useQueryParams();
-  const page = queryParams.get("page") ?? 1;
   const category = queryParams.get("category") ?? "";
   const [posts, setPosts] = useState(initialState);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalState, setModalState] = useState({
+    isOpen: false,
+    selectedId: 0,
+  });
+  const { addToast } = Toast.useToasts();
 
   const [results] = useQuery({
-    query,
+    query: getPostsQuery,
   });
+
+  const [_, removePost] = useMutation(removePostMutation);
 
   useEffect(() => {
     if (results.data) {
@@ -41,6 +49,22 @@ export const Blog = () => {
       }
     }
   }, [results, history.location.pathname]);
+
+  const handleRemove = useCallback((id: number) => {
+    removePost({ id }).then((result) => {
+      if (result.error) {
+        addToast(`id ${id} の投稿の削除に失敗しました。`, {
+          appearance: "error",
+          autoDismiss: true,
+        });
+      } else {
+        addToast(`id ${id} の投稿の削除に成功しました。`, {
+          appearance: "success",
+          autoDismiss: true,
+        });
+      }
+    });
+  }, []);
 
   const args = {
     data: posts,
@@ -112,8 +136,10 @@ export const Blog = () => {
               {
                 text: "削除",
                 onClick: () => {
-                  console.log("onClick data.delete");
-                  // TODO
+                  setModalState({
+                    isOpen: true,
+                    selectedId: data.id,
+                  });
                 },
                 type: "warning",
               },
@@ -147,6 +173,18 @@ export const Blog = () => {
               新規作成
             </Button>
           </Flex>
+          <ConfirmModal
+            title="投稿を削除します"
+            isOpen={modalState.isOpen}
+            onClose={() => {
+              setModalState({ ...modalState, isOpen: false });
+            }}
+            onSubmit={() => {
+              handleRemove(modalState.selectedId);
+            }}
+          >
+            {`id: ${modalState.selectedId} の投稿を削除します。`}
+          </ConfirmModal>
           <DataTable {...args} />
         </Flex>
       )}
